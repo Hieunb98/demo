@@ -1,0 +1,162 @@
+﻿Nhóm Chức Năng,Tên Hàm (Method),Tham số truyền vào (Arguments)
+1. Nhập liệu (Input),clearAndFillText,"By by, String value"
+1. Nhập liệu (Input),clearText,By by
+1. Nhập liệu (Input),clearTextCtrlA,By by
+1. Nhập liệu (Input),setText,"By by, String value"
+1. Nhập liệu (Input),setText,"By by, String value, Keys keys"
+1. Nhập liệu (Input),setTextAlert,String text
+1. Nhập liệu (Input),setWindowPosition,"int X, int Y"
+1. Nhập liệu (Input),setWindowSize,"int widthPixel, int heightPixel"
+10. Trình duyệt & Màn hình,addScreenshotToReport,String screenName
+10. Trình duyệt & Màn hình,closeCurrentWindow,
+10. Trình duyệt & Màn hình,maximizeWindow,
+10. Trình duyệt & Màn hình,minimizeWindow,
+10. Trình duyệt & Màn hình,openAndSwitchNewWindow,
+10. Trình duyệt & Màn hình,screenshotElement,"By by, String elementName"
+10. Trình duyệt & Màn hình,takeElementScreenshot,"By by, String screenName"
+10. Trình duyệt & Màn hình,takeFullPageScreenshot,String screenName
+2. Tương tác chuột & Phím (Mouse/Keyboard),clickElement,By by
+2. Tương tác chuột & Phím (Mouse/Keyboard),clickElement,"By by, int timeout"
+2. Tương tác chuột & Phím (Mouse/Keyboard),clickElementWithJs,By by
+2. Tương tác chuột & Phím (Mouse/Keyboard),clickLinkText,String linkText
+2. Tương tác chuột & Phím (Mouse/Keyboard),dragAndDrop,"By fromElement, By toElement"
+2. Tương tác chuột & Phím (Mouse/Keyboard),dragAndDropHTML5,"By fromElement, By toElement"
+2. Tương tác chuột & Phím (Mouse/Keyboard),dragAndDropToOffset,"By fromElement, int X, int Y"
+2. Tương tác chuột & Phím (Mouse/Keyboard),hoverOnElement,By by
+2. Tương tác chuột & Phím (Mouse/Keyboard),rightClickElement,By by
+3. Lựa chọn (Dropdown/Select),selectOptionByIndex,"By by, int index"
+3. Lựa chọn (Dropdown/Select),selectOptionByText,"By by, String text"
+3. Lựa chọn (Dropdown/Select),selectOptionByValue,"By by, String value"
+3. Lựa chọn (Dropdown/Select),selectOptionDynamic,"By objectListItem, String text"
+4. Iframe / Window / Alert,switchToDefaultContent,
+4. Iframe / Window / Alert,switchToFrameByElement,By by
+4. Iframe / Window / Alert,switchToFrameByIdOrName,String IdOrName
+4. Iframe / Window / Alert,switchToFrameByIndex,int index
+4. Iframe / Window / Alert,switchToLastWindow,
+4. Iframe / Window / Alert,switchToMainWindow,
+4. Iframe / Window / Alert,switchToMainWindow,String originalWindow
+4. Iframe / Window / Alert,switchToWindowOrTabByPosition,int position
+4. Iframe / Window / Alert,switchToWindowOrTabByTitle,String title
+4. Iframe / Window / Alert,switchToWindowOrTabByUrl,String url
+5. Lấy dữ liệu (Get Data),getAttributeElement,"By by, String attributeName"
+5. Lấy dữ liệu (Get Data),getCssValueElement,"By by, String cssName"
+5. Lấy dữ liệu (Get Data),getCurrentUrl,
+5. Lấy dữ liệu (Get Data),getHTML5MessageField,By by
+5. Lấy dữ liệu (Get Data),getJsExecutor,
+5. Lấy dữ liệu (Get Data),getListElementsText,By by
+5. Lấy dữ liệu (Get Data),getLocationElement,By by
+5. Lấy dữ liệu (Get Data),getOptionDynamicTotal,By objectListItem
+5. Lấy dữ liệu (Get Data),getPageTitle,
+5. Lấy dữ liệu (Get Data),getPathDownloadDirectory,
+5. Lấy dữ liệu (Get Data),getSizeElement,By by
+5. Lấy dữ liệu (Get Data),getTagNameElement,By by
+5. Lấy dữ liệu (Get Data),getTextAlert,
+5. Lấy dữ liệu (Get Data),getTextElement,By by
+5. Lấy dữ liệu (Get Data),getToUrlAuthentication,"String url, String username, String password"
+5. Lấy dữ liệu (Get Data),getValueTableByColumn,int column
+5. Lấy dữ liệu (Get Data),getWebElement,By by
+5. Lấy dữ liệu (Get Data),getWebElements,By by
+6. Chờ đợi (Wait / Sync),waitForAlertPresent,
+6. Chờ đợi (Wait / Sync),waitForAlertPresent,int timeOut
+6. Chờ đợi (Wait / Sync),waitForAngularLoad,
+6. Chờ đợi (Wait / Sync),waitForElementClickable,"By by, long timeOut"
+6. Chờ đợi (Wait / Sync),waitForElementClickable,By by
+6. Chờ đợi (Wait / Sync),waitForElementHasAttribute,"By by, String attributeName"
+6. Chờ đợi (Wait / Sync),waitForElementPresent,"By by, long timeOut"
+6. Chờ đợi (Wait / Sync),waitForElementPresent,By by
+6. Chờ đợi (Wait / Sync),waitForElementVisible,"By by, int timeout"
+6. Chờ đợi (Wait / Sync),waitForElementVisible,By by
+6. Chờ đợi (Wait / Sync),waitForJQueryLoad,
+6. Chờ đợi (Wait / Sync),waitForPageLoaded,
+6. Chờ đợi (Wait / Sync),waitForPageLoaded,int timeOut
+7. Kiểm tra kết quả (Verify),VerifyPageTitle,String pageTitle
+7. Kiểm tra kết quả (Verify),checkContainsValueOnTableByColumn,"int column, String value"
+7. Kiểm tra kết quả (Verify),checkContainsValueOnTableByColumn,"int column, String value, String xpathToTRtagname"
+7. Kiểm tra kết quả (Verify),checkElementExist,By by
+7. Kiểm tra kết quả (Verify),checkElementExist,"By by, int maxRetries, int waitTimeMillis"
+7. Kiểm tra kết quả (Verify),checkEqualsValueOnTableByColumn,"int column, String value"
+7. Kiểm tra kết quả (Verify),verifyAlertPresent,int timeOut
+7. Kiểm tra kết quả (Verify),verifyContains,"String actual, String expected"
+7. Kiểm tra kết quả (Verify),verifyContains,"String actual, String expected, String message"
+7. Kiểm tra kết quả (Verify),verifyDownloadFileContainsName,"String fileName, int timeoutSeconds"
+7. Kiểm tra kết quả (Verify),verifyDownloadFileEqualsName,"String fileName, int timeoutSeconds"
+7. Kiểm tra kết quả (Verify),verifyElementAttributeValue,"By by, String attributeName, String attributeValue"
+7. Kiểm tra kết quả (Verify),verifyElementChecked,By by
+7. Kiểm tra kết quả (Verify),verifyElementChecked,"By by, String message"
+7. Kiểm tra kết quả (Verify),verifyElementClickable,By by
+7. Kiểm tra kết quả (Verify),verifyElementClickable,"By by, int timeout"
+7. Kiểm tra kết quả (Verify),verifyElementClickable,"By by, int timeout, String message"
+7. Kiểm tra kết quả (Verify),verifyElementHasAttribute,"By by, String attributeName, int timeOut"
+7. Kiểm tra kết quả (Verify),verifyElementNotPresent,By by
+7. Kiểm tra kết quả (Verify),verifyElementNotPresent,"By by, int timeout"
+7. Kiểm tra kết quả (Verify),verifyElementNotPresent,"By by, String message"
+7. Kiểm tra kết quả (Verify),verifyElementNotPresent,"By by, int timeout, String message"
+7. Kiểm tra kết quả (Verify),verifyElementNotVisible,By by
+7. Kiểm tra kết quả (Verify),verifyElementNotVisible,"By by, int timeout"
+7. Kiểm tra kết quả (Verify),verifyElementNotVisible,"By by, String message"
+7. Kiểm tra kết quả (Verify),verifyElementNotVisible,"By by, int timeout, String message"
+7. Kiểm tra kết quả (Verify),verifyElementPresent,By by
+7. Kiểm tra kết quả (Verify),verifyElementPresent,"By by, int timeout"
+7. Kiểm tra kết quả (Verify),verifyElementPresent,"By by, String message"
+7. Kiểm tra kết quả (Verify),verifyElementPresent,"By by, int timeout, String message"
+7. Kiểm tra kết quả (Verify),verifyElementText,"By by, String text"
+7. Kiểm tra kết quả (Verify),verifyElementTextContains,"By by, String text, FailureHandling flowControl"
+7. Kiểm tra kết quả (Verify),verifyElementTextContains,"By by, String text"
+7. Kiểm tra kết quả (Verify),verifyElementTextEquals,"By by, String text, FailureHandling flowControl"
+7. Kiểm tra kết quả (Verify),verifyElementTextEquals,"By by, String text"
+7. Kiểm tra kết quả (Verify),verifyElementVisible,By by
+7. Kiểm tra kết quả (Verify),verifyElementVisible,"By by, int timeout"
+7. Kiểm tra kết quả (Verify),verifyElementVisible,"By by, String message"
+7. Kiểm tra kết quả (Verify),verifyElementVisible,"By by, int timeout, String message"
+7. Kiểm tra kết quả (Verify),verifyEquals,"Object actual, Object expected"
+7. Kiểm tra kết quả (Verify),verifyEquals,"Object actual, Object expected, String message"
+7. Kiểm tra kết quả (Verify),verifyFileContainsInDownloadDirectory,String fileName
+7. Kiểm tra kết quả (Verify),verifyFileDownloadedWithJS_Contains,String fileName
+7. Kiểm tra kết quả (Verify),verifyFileDownloadedWithJS_Equals,String fileName
+7. Kiểm tra kết quả (Verify),verifyFileEqualsInDownloadDirectory,String fileName
+7. Kiểm tra kết quả (Verify),verifyHTML5RequiredField,By by
+7. Kiểm tra kết quả (Verify),verifyHTML5ValidValueField,By by
+7. Kiểm tra kết quả (Verify),verifyOptionDynamicExist,"By by, String text"
+7. Kiểm tra kết quả (Verify),verifyOptionTotal,"By by, int total"
+7. Kiểm tra kết quả (Verify),verifyPageContainsText,String text
+7. Kiểm tra kết quả (Verify),verifySelectedByIndex,"By by, int index"
+7. Kiểm tra kết quả (Verify),verifySelectedByText,"By by, String text"
+7. Kiểm tra kết quả (Verify),verifySelectedByValue,"By by, String value"
+7. Kiểm tra kết quả (Verify),verifyTotalOfWindowsOrTab,int number
+7. Kiểm tra kết quả (Verify),verifyTrue,boolean condition
+7. Kiểm tra kết quả (Verify),verifyTrue,"boolean condition, String message"
+8. Khác (Others),acceptAlert,
+8. Khác (Others),dismissAlert,
+8. Khác (Others),highLightElement,By by
+8. Khác (Others),isElementDisplayed,"By by, int second"
+8. Khác (Others),isElementDisplayed,By by
+8. Khác (Others),isElementPresent,"By by, int second"
+8. Khác (Others),isElementVisible,"By by, int second"
+8. Khác (Others),logConsole,@Nullable Object object
+8. Khác (Others),mouseHover,By by
+8. Khác (Others),moveToElement,By toElement
+8. Khác (Others),moveToOffset,"int X, int Y"
+8. Khác (Others),navigateToUrl,String URL
+8. Khác (Others),notificationsAllow,
+8. Khác (Others),notificationsBlock,
+8. Khác (Others),openAndSwitchNewTab,
+8. Khác (Others),openWebsite,String URL
+8. Khác (Others),printPage,int endPage
+8. Khác (Others),reloadPage,
+8. Khác (Others),scrollToElementAtBottom,By by
+8. Khác (Others),scrollToElementAtBottom,WebElement webElement
+8. Khác (Others),scrollToElementAtCenter,By by
+8. Khác (Others),scrollToElementAtCenter,WebElement webElement
+8. Khác (Others),scrollToElementAtTop,By by
+8. Khác (Others),scrollToElementAtTop,WebElement webElement
+8. Khác (Others),scrollToPosition,"int X, int Y"
+8. Khác (Others),sendKeys,"By by, Keys keys"
+8. Khác (Others),sendKeys,Keys keys
+8. Khác (Others),sleep,double second
+8. Khác (Others),smartWait,
+8. Khác (Others),stopSoftAssertAll,
+9. Xử lý File (Upload/Download),countFilesInDownloadDirectory,
+9. Xử lý File (Upload/Download),deleteAllFileInDirectory,String pathDirectory
+9. Xử lý File (Upload/Download),deleteAllFileInDownloadDirectory,
+9. Xử lý File (Upload/Download),uploadFileWithLocalForm,"By by, String filePath"
+9. Xử lý File (Upload/Download),uploadFileWithSendKeys,"By by, String filePath"
