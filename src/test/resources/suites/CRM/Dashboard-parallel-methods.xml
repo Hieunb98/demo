@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="CRM Dashboard Test Suite">
+
+    <listeners>
+        <listener class-name="com.practiceCRM.listeners.AnnotationTransformer"/>
+    </listeners>
+
+    
+    <test name="DashBoard Test" parallel="methods" thread-count="4">
+        <parameter name="BROWSER" value="chrome"/>
+        <classes>
+            <class name="com.practiceCRM.projects.crm.testcases.DashboardTest"/>
+        </classes>
+    </test>
+</suite>

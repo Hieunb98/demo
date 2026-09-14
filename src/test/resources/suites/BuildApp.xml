@@ -2,7 +2,7 @@
 <suite name="Build App">
     <test name="Build App">
         <classes>
-            <class name="com.anhtester.projects.App"/>
+            <class name="com.practiceCRM.projects.App"/>
         </classes>
     </test>
 </suite>

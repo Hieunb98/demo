@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="CRM Projects Simple Suite">
+
+    <listeners>
+        <listener class-name="com.practiceCRM.listeners.AnnotationTransformer"/>
+    </listeners>
+
+    <test name="Projects Test - Sequential">
+        <parameter name="BROWSER" value="chrome"/>
+        <classes>
+            <class name="com.practiceCRM.projects.crm.testcases.projects.ProjectGridTest"/>
+            <class name="com.practiceCRM.projects.crm.testcases.projects.ProjectCRUDTest"/>
+            <class name="com.practiceCRM.projects.crm.testcases.projects.ProjectFilterTest"/>
+        </classes>
+    </test>
+</suite>

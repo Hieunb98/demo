@@ -3,13 +3,13 @@
 <suite name="Regression Tests CRM">
 
     <listeners>
-        <listener class-name="com.anhtester.listeners.AnnotationTransformer"/>
+        <listener class-name="com.practiceCRM.listeners.AnnotationTransformer"/>
     </listeners>
 
     <test name="SignIn Test" parallel="methods">
         <parameter name="BROWSER" value="chrome"/>
         <classes>
-            <class name="com.anhtester.projects.crm.testcases.SignInTest"/>
+            <class name="com.practiceCRM.projects.crm.testcases.LoginTest"/>
         </classes>
     </test>
 

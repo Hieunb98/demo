@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="CRM Projects Test Suite">
+
+    <listeners>
+        <listener class-name="com.practiceCRM.listeners.AnnotationTransformer"/>
+    </listeners>
+
+    <test name="Projects Test - Parallel Methods" parallel="methods" thread-count="4">
+        <parameter name="BROWSER" value="chrome"/>
+        <classes>
+            <class name="com.practiceCRM.projects.crm.testcases.projects.ProjectGridTest"/>
+            <class name="com.practiceCRM.projects.crm.testcases.projects.ProjectCRUDTest"/>
+            <class name="com.practiceCRM.projects.crm.testcases.projects.ProjectFilterTest"/>
+        </classes>
+    </test>
+</suite>

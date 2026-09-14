@@ -1,33 +1,38 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+# Workflow CI: Build, test và publish report tự động khi push/PR vào nhánh main
+# Ref: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
 name: Run Maven with GitHub CI
 
 on:
    push:
-      branches: [ "main" ]
+      branches: [ "main" ]         # Trigger khi push lên main
    pull_request:
-      branches: [ "main" ]
+      branches: [ "main" ]         # Trigger khi tạo PR vào main
 
 jobs:
    build:
-
-      runs-on: windows-latest
+      runs-on: windows-latest      # Chạy trên máy ảo Windows
 
       steps:
+         # 1. Tải source code về runner (bao gồm submodule và toàn bộ lịch sử commit)
          -  uses: actions/checkout@v4
             with:
                submodules: recursive
                fetch-depth: 0
+
+         # 2. Cài JDK 17 (Amazon Corretto) và cache Maven dependencies
          -  name: Set up JDK 17
             uses: actions/setup-java@v4
             with:
                distribution: 'corretto'
                java-version: '17'
                cache: maven
+
+         # 3. Chạy toàn bộ test cases
          -  name: Run test with Maven
             run: mvn clean test --file pom.xml
 
+         # 4. Lấy lịch sử Allure từ gh-pages (để hiển thị trend report)
          -  name: Get Allure history
             uses: actions/checkout@v4
             if: always()
@@ -36,6 +41,7 @@ jobs:
                ref: gh-pages
                path: gh-pages
 
+         # 5. Copy lịch sử cũ vào thư mục allure-results
          -  name: Copy Allure history
             if: always()
             continue-on-error: true
@@ -44,10 +50,12 @@ jobs:
                mkdir -p target/allure-results/history
                cp -Rr gh-pages/history/* target/allure-results/history/ || true
 
+         # 6. Generate báo cáo Allure HTML
          -  name: Generate Allure Report
             if: always()
             run: mvn allure:report --file pom.xml
 
+         # 7. Upload Extent Report lên Artifacts
          -  name: Upload Extent Report
             if: always()
             uses: actions/upload-artifact@v4
@@ -55,6 +63,7 @@ jobs:
                name: extent-report
                path: exports/ExtentReports/ExtentReports.html
 
+         # 8. Upload Allure Report lên Artifacts
          -  name: Upload Allure Report
             if: always()
             uses: actions/upload-artifact@v4
@@ -62,6 +71,7 @@ jobs:
                name: allure-report
                path: target/site/allure-maven-plugin/
 
+         # 9. Upload video ghi lại quá trình chạy test
          -  name: Upload videos for tests
             if: always()
             uses: actions/upload-artifact@v4
@@ -69,6 +79,7 @@ jobs:
                name: test-videos
                path: exports/ExportData/Videos
 
+         # 10. Upload screenshot khi test fail
          -  name: Upload screenshots for tests
             if: always()
             uses: actions/upload-artifact@v4
@@ -76,6 +87,7 @@ jobs:
                name: test-screenshots
                path: exports/ExportData/Images
 
+         # 11. Deploy Allure Report lên GitHub Pages
          -  name: Deploy Allure Report to GitHub Pages
             if: always()
             uses: peaceiris/actions-gh-pages@v4
@@ -84,10 +96,12 @@ jobs:
                publish_branch: gh-pages
                publish_dir: target/site/allure-maven-plugin
 
+         # 12. Generate JavaDoc từ source code
          -  name: Generate JavaDocs
             if: always()
             run: mvn javadoc:javadoc
 
+         # 13. Deploy JavaDoc lên GitHub Pages (thư mục /docs, giữ nguyên file cũ)
          -  name: Deploy JavaDoc to GitHub Pages
             if: always()
             uses: peaceiris/actions-gh-pages@v4

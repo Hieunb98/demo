@@ -12,33 +12,17 @@
 
     <!-- version: Phiên bản hiện tại của project (ví dụ: 1.0.0) -->
     <version>1.0.0</version>
-    <packaging>pom</packaging>
-    <modules>
-        <!-- Liệt kê tên các module con trong project (nếu có) -->
-        <module>practiceCRM</module>
-    </modules>
+    <packaging>jar</packaging>
 
     <!-- name: Tên hiển thị (thân thiện) của project -->
-    <name>AutomationFrameworkSelenium</name>
+    <name>PracticeAutomationSeleniumJava</name>
 
     <!-- url: Đường link GitHub hoặc trang web của project -->
-    <url>https://github.com/your-username/your-project</url>
+    <url>https://github.com/Hieunb98/demo.git</url>
 
     <!-- description: Mô tả ngắn gọn về mục đích của project này -->
     <description>Test Automation Framework Selenium Java with TestNG</description>
 
-    <developers>
-        <developer>
-            <!-- name: Họ và tên của người phát triển/tester phụ trách project -->
-            <name>Your Name</name>
-            <!-- email: Email liên hệ của bạn -->
-            <email>your-email@example.com</email>
-            <!-- organization: Tên công ty hoặc link website của bạn -->
-            <organization>https://yourwebsite.com</organization>
-            <!-- organizationUrl: Link GitHub cá nhân hoặc trang tổ chức -->
-            <organizationUrl>https://github.com/your-username</organizationUrl>
-        </developer>
-    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -328,6 +312,13 @@
                     <configuration>
                         <source>${java-compiler.version}</source>
                         <target>${java-compiler.version}</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
                     </configuration>
                 </plugin>
 
