@@ -13,3 +13,5 @@ test-output/
 allure-report/
 .allure/
 .vscode/
+.DS_Store
+**/.DS_Store
