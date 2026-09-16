@@ -4,6 +4,7 @@
 name: Run Maven with GitHub CI
 
 on:
+   workflow_dispatch:    # Cho phép chạy thủ công trên GitHub UI
    push:
       branches: [ "main" ]         # Trigger khi push lên main
    pull_request:
@@ -30,6 +31,8 @@ jobs:
 
          # 3. Chạy toàn bộ test cases
          -  name: Run test with Maven
+            env:
+               ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
             run: mvn clean test --file pom.xml
 
          # 4. Lấy lịch sử Allure từ gh-pages (để hiển thị trend report)

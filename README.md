@@ -1,8 +1,8 @@
 ![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](<https://img.shields.io/badge/License-Apache%202.0-blue.svg>)](https://opensource.org/licenses/Apache-2.0)
 [![Java CI with Maven on Windows](https://github.com/anhtester/AutomationFrameworkSelenium/actions/workflows/maven.yml/badge.svg)](https://github.com/anhtester/AutomationFrameworkSelenium/actions/workflows/maven.yml)
 
-## Test Automation Framework using Selenium Java and TestNG building by Anh Tester
+## Test Automation Framework using Selenium Java and TestNG 
 
 ### **💥Important**: when clone this repo, you should select '**Recursive**' to get all submodules
 
@@ -38,7 +38,6 @@
   Download jar and setting Variable Environment as Java JDK
 
   ![image](https://user-images.githubusercontent.com/87883620/161661705-b8706957-5a26-4faf-8ddf-2f9aef78418e.png)
-
 - Use **IntelliJ IDEA** is the best choice (easy change the JDK version)
 
 ![image](https://user-images.githubusercontent.com/87883620/161707184-7ad558f2-0d7d-4851-bfd6-2796d4e46593.png)
@@ -48,7 +47,7 @@
 **1. Run parallel the test case**
 
 - Run test cases in suite XML (**src/test/resources/suites/**)
-- Run test cases from Maven with setup in the pom.xml file 
+- Run test cases from Maven with setup in the pom.xml file
   (**mvn clean test**)
 
   ![image](https://user-images.githubusercontent.com/87883620/161658761-5040e527-b410-46b3-8697-3298523e201d.png)
@@ -210,7 +209,6 @@ https://www.selenium.dev/documentation/webdriver/getting_started/install_drivers
 > java -jar selenium-server-4.22.0.jar node --port 6667
 
 > java -jar selenium-server-4.22.0.jar node --port 7778
-
 
 **📝 NOTE: Thực thi nhiều lệnh thì mở nhiều CMD**
 

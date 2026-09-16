@@ -22,8 +22,19 @@ public final class DecodeUtils {
     private static final String key1 = "AES";
     private static final String key2 = "AES/ECB/PKCS5Padding";
 
-    private static String encryptionKeyString = "autotestselenium";
-    private static final byte[] encryptionKeyBytes = encryptionKeyString.getBytes();
+    // private static String encryptionKeyString = "autotestselenium";
+    // Lấy key từ System Property (-D), Environment Variable (GitHub Actions
+    // Secret), hoặc mặc định ở Local
+    private static String getEncryptionKey() {
+        String key = System.getProperty("ENCRYPTION_KEY");
+        if (key == null || key.trim().isEmpty()) {
+            key = System.getenv("ENCRYPTION_KEY");
+        }
+        return key;
+    }
+
+    private static final byte[] encryptionKeyBytes = getEncryptionKey()
+            .getBytes(java.nio.charset.StandardCharsets.UTF_8);
 
     private static SecretKey generateKey() {
         SecretKey key = new SecretKeySpec(encryptionKeyBytes, key1);
