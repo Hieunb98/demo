@@ -13,7 +13,7 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-//import tech.grasshopper.reporter.ExtentPDFReporter;
+import tech.grasshopper.reporter.ExtentPDFReporter;
 
 import java.io.File;
 import java.util.Objects;
@@ -38,14 +38,17 @@ public class ExtentReportManager {
                 LogUtils.info("Link Extent Report: " + link);
             }
 
-            // ExtentPDFReporter pdf = new
-            // ExtentPDFReporter("reports/ExtentReports/PdfReport.pdf");
-            // try {
-            // pdf.loadJSONConfig(new File("src/test/resources/pdf-config.json"));
-            // } catch (IOException e) {
-            // throw new RuntimeException(e);
-            // }
-            // extentReports.attachReporter(pdf);
+            try {
+                ExtentPDFReporter pdf = new ExtentPDFReporter("exports/ExtentReports/ExtentReports.pdf");
+                File pdfConfigFile = new File("src/test/resources/pdf-config.json");
+                if (pdfConfigFile.exists()) {
+                    pdf.loadJSONConfig(pdfConfigFile);
+                }
+                extentReports.attachReporter(pdf);
+                LogUtils.info("Extent PDF Reporter is attached.");
+            } catch (Exception e) {
+                LogUtils.warn("Không thể cấu hình ExtentPDFReporter: " + e.getMessage());
+            }
 
             ExtentSparkReporter spark = new ExtentSparkReporter(link);
             extentReports.attachReporter(spark);

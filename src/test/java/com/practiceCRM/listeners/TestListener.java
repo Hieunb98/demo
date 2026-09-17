@@ -164,7 +164,9 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
          builder.put("URL CMS User", FrameworkConstants.URL_CMS_USER);
       }
 
-      builder.put("Target Execution", FrameworkConstants.TARGET)
+      builder.put("Operating System", BrowserInfoUtils.getOSInfo())
+            .put("Java Version", System.getProperty("java.version"))
+            .put("Target Execution", FrameworkConstants.TARGET)
             .put("Explicit Timeout", String.valueOf(FrameworkConstants.WAIT_EXPLICIT))
             .put("Page Load Timeout", String.valueOf(FrameworkConstants.WAIT_PAGE_LOADED))
             .put("Headless Mode", FrameworkConstants.HEADLESS)

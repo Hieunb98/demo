@@ -4,15 +4,47 @@
 name: Run Maven with GitHub CI
 
 on:
-   workflow_dispatch:    # Cho phép chạy thủ công trên GitHub UI
+   workflow_dispatch:    # Cho phép chạy thủ công trên GitHub UI và chọn cấu hình
+      inputs:
+         browser:
+            description: 'Chọn trình duyệt kiểm thử'
+            required: false
+            default: 'chrome'
+            type: choice
+            options:
+               - chrome
+               - edge
+               - firefox
+         suite:
+            description: 'Chọn Test Suite XML muốn chạy'
+            required: false
+            default: 'SuiteAll.xml'
+            type: choice
+            options:
+               - SuiteAll.xml
+               - CRM/SignIn-parallel-methods.xml
+               - CRM/Dashboard-parallel-methods.xml
+               - CRM/TopBarTest-parallel-methods.xml
+               - CRM/Project-parallel-methods.xml
+         headless:
+            description: 'Chạy ngầm (Headless mode)'
+            required: false
+            default: true
+            type: boolean
    push:
       branches: [ "main" ]         # Trigger khi push lên main
    pull_request:
       branches: [ "main" ]         # Trigger khi tạo PR vào main
+   schedule:
+      - cron: '0 19 * * *'         # Nightly build tự động chạy lúc 2h00 sáng VN (19:00 UTC)
 
 jobs:
    build:
-      runs-on: windows-latest      # Chạy trên máy ảo Windows
+      # Các lựa chọn hệ điều hành Runner trên GitHub Actions:
+      # - ubuntu-latest  : Linux (Khuyên dùng: Khởi động nhanh nhất, ít lỗi mạng, tiết kiệm quota phút chạy)
+      # - windows-latest : Windows Server (Dùng khi test case yêu cầu môi trường Windows)
+      # - macos-latest   : macOS (Dùng cho test Safari/iOS/Mac, tốn x10 quota phút chạy)
+      runs-on: windows-latest
 
       steps:
          # 1. Tải source code về runner (bao gồm submodule và toàn bộ lịch sử commit)
@@ -23,7 +55,7 @@ jobs:
 
          # 2. Cài JDK 17 (Amazon Corretto) và cache Maven dependencies
          -  name: Set up JDK 17
-            uses: actions/setup-java@v4
+            uses: actions/setup-java@v5
             with:
                distribution: 'corretto'
                java-version: '17'
@@ -31,7 +63,17 @@ jobs:
 
          # 3. Chạy toàn bộ test cases
          -  name: Run test with Maven
-            run: mvn clean test --file pom.xml -DENCRYPTION_KEY="${{ secrets.ENCRYPTION_KEY }}"
+            shell: bash
+            run: |
+               SUITE_NAME="${{ github.event.inputs.suite || 'SuiteAll.xml' }}"
+               BROWSER_NAME="${{ github.event.inputs.browser || 'chrome' }}"
+               HEADLESS_MODE="${{ github.event.inputs.headless != '' && github.event.inputs.headless || 'true' }}"
+               echo "Running suite: $SUITE_NAME on browser: $BROWSER_NAME (headless=$HEADLESS_MODE)"
+               mvn clean test --file pom.xml \
+                 -DsuiteXmlFile="src/test/resources/suites/$SUITE_NAME" \
+                 -DBROWSER="$BROWSER_NAME" \
+                 -DHEADLESS="$HEADLESS_MODE" \
+                 -DENCRYPTION_KEY="${{ secrets.ENCRYPTION_KEY }}"
 
          # 4. Lấy lịch sử Allure từ gh-pages (để hiển thị trend report)
          -  name: Get Allure history
@@ -56,13 +98,15 @@ jobs:
             if: always()
             run: mvn allure:report --file pom.xml
 
-         # 7. Upload Extent Report lên Artifacts
+         # 7. Upload Extent Report lên Artifacts (HTML và PDF)
          -  name: Upload Extent Report
             if: always()
             uses: actions/upload-artifact@v4
             with:
                name: extent-report
-               path: exports/ExtentReports/ExtentReports.html
+               path: |
+                  exports/ExtentReports/ExtentReports.html
+                  exports/ExtentReports/ExtentReports.pdf
 
          # 8. Upload Allure Report lên Artifacts
          -  name: Upload Allure Report

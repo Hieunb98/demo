@@ -74,7 +74,9 @@ public final class FrameworkConstants {
         public static final String EXCEL_CRM_PRODUCTS_USER = PropertiesHelpers.getValue("EXCEL_CRM_PRODUCTS_USER");
 
         // ===== CẤU HÌNH MÔI TRƯỜNG & URL =====
-        public static final String BROWSER = PropertiesHelpers.getValue("BROWSER");
+        public static final String BROWSER = System.getProperty("BROWSER") != null
+                        ? System.getProperty("BROWSER")
+                        : PropertiesHelpers.getValue("BROWSER");
         public static final String URL_CRM = PropertiesHelpers.getValue("URL_CRM");
         public static final String URL_CMS_ADMIN = PropertiesHelpers.getValue("URL_CMS_ADMIN");
         public static final String URL_CMS_USER = PropertiesHelpers.getValue("URL_CMS_USER");
@@ -88,12 +90,20 @@ public final class FrameworkConstants {
         public static final String EXTENT_REPORT_FOLDER = PropertiesHelpers.getValue("EXTENT_REPORT_FOLDER");
         public static final String EXPORT_VIDEO_PATH = PropertiesHelpers.getValue("EXPORT_VIDEO_PATH");
         public static final String EXPORT_CAPTURE_PATH = PropertiesHelpers.getValue("EXPORT_CAPTURE_PATH");
-        public static final String SEND_REPORT_TO_TELEGRAM = PropertiesHelpers.getValue("SEND_REPORT_TO_TELEGRAM");
-        public static final String TELEGRAM_TOKEN = PropertiesHelpers.getValue("TELEGRAM_TOKEN");
-        public static final String TELEGRAM_CHATID = PropertiesHelpers.getValue("TELEGRAM_CHATID");
+        public static final String SEND_REPORT_TO_TELEGRAM = System.getProperty("SEND_REPORT_TO_TELEGRAM") != null
+                        ? System.getProperty("SEND_REPORT_TO_TELEGRAM")
+                        : PropertiesHelpers.getValue("SEND_REPORT_TO_TELEGRAM");
+        public static final String TELEGRAM_TOKEN = System.getProperty("TELEGRAM_TOKEN") != null
+                        ? System.getProperty("TELEGRAM_TOKEN")
+                        : PropertiesHelpers.getValue("TELEGRAM_TOKEN");
+        public static final String TELEGRAM_CHATID = System.getProperty("TELEGRAM_CHATID") != null
+                        ? System.getProperty("TELEGRAM_CHATID")
+                        : PropertiesHelpers.getValue("TELEGRAM_CHATID");
         public static final String AUTHOR = PropertiesHelpers.getValue("AUTHOR");
         public static final String TARGET = PropertiesHelpers.getValue("TARGET");
-        public static final String HEADLESS = PropertiesHelpers.getValue("HEADLESS");
+        public static final String HEADLESS = System.getProperty("HEADLESS") != null
+                        ? System.getProperty("HEADLESS")
+                        : PropertiesHelpers.getValue("HEADLESS");
         public static final String OVERRIDE_REPORTS = PropertiesHelpers.getValue("OVERRIDE_REPORTS");
         public static final String OPEN_REPORTS_AFTER_EXECUTION = PropertiesHelpers
                         .getValue("OPEN_REPORTS_AFTER_EXECUTION");
