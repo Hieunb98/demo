@@ -1,0 +1,1 @@
+❌ Màu của label 'AI_automation' trong Manage modal không khớp (#29c2c2). Actual: #4A89F4

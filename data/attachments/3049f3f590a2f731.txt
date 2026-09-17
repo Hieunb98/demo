@@ -1,0 +1,1 @@
+Click on element with JS: By.xpath: //table[@id='project-table']//tbody//tr[.//a[contains(normalize-space(),'Auto_Hold_1789682298944')]]//a[@title='Edit project' or contains(@class,'edit')]

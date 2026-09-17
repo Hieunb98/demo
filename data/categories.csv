@@ -1,2 +1,4 @@
 "BROKEN","CATEGORY","FAILED","PASSED","SKIPPED","UNKNOWN"
-"0","Product defects (Assertion Failures)","1","0","0","0"
+"0","Product defects (Assertion Failures)","10","0","0","0"
+"3","Test defects (Runtime Exceptions)","0","0","0","0"
+"3","Timeout & Locator Issues","0","0","0","0"
