@@ -1117,6 +1117,11 @@ public class ProjectPageCRM extends CommonPageCRM {
         verifyTrue(!rows.isEmpty(), "Bảng không có bản ghi nào sau khi search từ khóa: '" + keyword + "'", flowControl);
 
         for (WebElement row : rows) {
+            // Bỏ qua dòng bị ẩn
+            if (!row.isDisplayed()) {
+                continue;
+            }
+
             List<WebElement> cells = row.findElements(By.tagName("td"));
             // Bỏ qua dòng trống (DataTables empty row: No matching records found / No data available)
             if (cells.size() < 2 || row.getAttribute("class").contains("dataTables_empty") || cells.get(0).getAttribute("class").contains("dataTables_empty")) {
@@ -1125,6 +1130,11 @@ public class ProjectPageCRM extends CommonPageCRM {
 
             String id = cells.get(0).getText().trim();
             String title = cells.get(1).getText().trim();
+
+            // Nếu cả ID và Title đều rỗng thì đây là dòng placeholder/kỹ thuật của bảng, bỏ qua
+            if (id.isEmpty() && title.isEmpty()) {
+                continue;
+            }
 
             verifyTrue(title.toLowerCase().contains(keyword.toLowerCase().trim()),
                     "Bản ghi [ID: " + id + " - Title: '" + title + "'] trên bảng không chứa từ khóa tìm kiếm: '" + keyword + "'", flowControl);

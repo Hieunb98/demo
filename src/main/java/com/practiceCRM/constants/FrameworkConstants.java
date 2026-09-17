@@ -32,7 +32,6 @@ public final class FrameworkConstants {
         // ===== ĐƯỜNG DẪN FILE DỮ LIỆU =====
         public static final String PROJECT_PATH = SystemHelpers.getCurrentDir();
         public static final String EXCEL_DATA_FILE_PATH = PropertiesHelpers.getValue("EXCEL_DATA_FILE_PATH");
-        public static final String JSON_DATA_FILE_PATH = PropertiesHelpers.getValue("JSON_DATA_FILE_PATH");
         public static final String EXCEL_CRM_LOGIN = PropertiesHelpers.getValue("EXCEL_CRM_LOGIN");
         public static final String EXCEL_PROJECTS_IMPORT = PropertiesHelpers.getValue("EXCEL_PROJECTS_IMPORT");
         public static final String EXCEL_PROJECTS_IMPORT_MULTI = PropertiesHelpers

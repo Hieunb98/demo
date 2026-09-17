@@ -96,10 +96,21 @@ jobs:
          # 6. Generate báo cáo Allure HTML
          -  name: Generate Allure Report
             if: always()
-            shell: bash
+            run: mvn allure:report --file pom.xml
+
+         -  name: Override Allure Executor for GitHub Actions
+            if: always()
+            shell: pwsh
             run: |
-               mvn allure:report --file pom.xml
-               python -c "import json, os; src='target/allure-results/executor.json'; dest='target/site/allure-maven-plugin/widgets/executors.json'; os.makedirs(os.path.dirname(dest), exist_ok=True); (json.dump([json.load(open(src, encoding='utf-8'))], open(dest, 'w', encoding='utf-8'), indent=2)) if os.path.exists(src) else None"
+               if (Test-Path "target/allure-results/executor.json") {
+                   $data = Get-Content "target/allure-results/executor.json" -Raw | ConvertFrom-Json
+                   $dest = "target/site/allure-maven-plugin/widgets/executors.json"
+                   New-Item -ItemType Directory -Force -Path "target/site/allure-maven-plugin/widgets" | Out-Null
+                   @($data) | ConvertTo-Json -Depth 5 | Set-Content $dest -Encoding UTF8
+                   Write-Host "Overwritten $dest successfully with GitHub Actions executor!"
+               } else {
+                   Write-Host "File target/allure-results/executor.json NOT found!"
+               }
 
          # 7. Upload Extent Report lên Artifacts (HTML và PDF)
          -  name: Upload Extent Report
