@@ -1,1 +1,1 @@
-{"total":3,"items":[{"uid":"9cc9afa9e0099ec215eb6e68a5dd44ba","name":"Product defects (Assertion Failures)","statistic":{"failed":10,"broken":0,"skipped":0,"passed":0,"unknown":0,"total":10}},{"uid":"3603ffd34003682346c87222c9c490bf","name":"Test defects (Runtime Exceptions)","statistic":{"failed":0,"broken":3,"skipped":0,"passed":0,"unknown":0,"total":3}},{"uid":"d8c19eb3e37b427900f3b9d4207c474d","name":"Timeout & Locator Issues","statistic":{"failed":0,"broken":3,"skipped":0,"passed":0,"unknown":0,"total":3}}]}
+{"total":0,"items":[]}

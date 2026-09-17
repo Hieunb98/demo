@@ -1,1 +1,0 @@
-➕ [ADD PROJECT] Đã tạo dự án: [Title: Auto_Doing_1789682298946 | Type: Default | Client: None | Price: 4500 | StartDate: 2026-07-10 | Deadline: 2026-09-27 | Label: AI_automation]

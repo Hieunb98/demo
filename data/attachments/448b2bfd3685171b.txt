@@ -1,1 +1,0 @@
-❌ Bản ghi có Start date=2026-01-25 nằm ngoài khoảng [2026-09-01 -> 2026-09-30] của tùy chọn This Month
