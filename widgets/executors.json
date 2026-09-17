@@ -1,1 +1,7 @@
-[{"buildName":"CRM-Automation-Framework","name":"Maven","type":"maven"}]
+[
+  {
+    "buildName": "CRM-Automation-Framework",
+    "name": "Maven",
+    "type": "maven"
+  }
+]
