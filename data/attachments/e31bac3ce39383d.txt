@@ -1,1 +1,0 @@
-Click on element with JS: By.cssSelector: .color-palet span[data-color='#f1c40f']
