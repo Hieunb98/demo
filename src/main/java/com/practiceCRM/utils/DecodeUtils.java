@@ -33,12 +33,9 @@ public final class DecodeUtils {
         return key;
     }
 
-    private static final byte[] encryptionKeyBytes = getEncryptionKey()
-            .getBytes(java.nio.charset.StandardCharsets.UTF_8);
-
     private static SecretKey generateKey() {
-        SecretKey key = new SecretKeySpec(encryptionKeyBytes, key1);
-        return key;
+        byte[] encryptionKeyBytes = getEncryptionKey().getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        return new SecretKeySpec(encryptionKeyBytes, key1);
     }
 
     public static String encrypt(String Data) {

@@ -31,9 +31,7 @@ jobs:
 
          # 3. Chạy toàn bộ test cases
          -  name: Run test with Maven
-            env:
-               ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
-            run: mvn clean test --file pom.xml
+            run: mvn clean test --file pom.xml -DENCRYPTION_KEY="${{ secrets.ENCRYPTION_KEY }}"
 
          # 4. Lấy lịch sử Allure từ gh-pages (để hiển thị trend report)
          -  name: Get Allure history

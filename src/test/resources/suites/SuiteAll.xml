@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Regression Test CRM and CMS">
+<suite name="Regression Test CRM Full Suite">
     <suite-files>
         <suite-file path="CRM/SignIn-parallel-methods.xml"/>
-        <suite-file path="CRM/Clients-parallel.xml"/>
-        <suite-file path="CMS/LoginTestCMS.xml"/>
-        <suite-file path="CMS/AddProductCMS.xml"/>
-        <suite-file path="CMS/OrderProductCMS.xml"/>
+        <suite-file path="CRM/Dashboard-parallel-methods.xml"/>
+        <suite-file path="CRM/TopBarTest-parallel-methods.xml"/>
+        <suite-file path="CRM/Project-parallel-methods.xml"/>
     </suite-files>
 </suite>

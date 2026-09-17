@@ -60,12 +60,11 @@
         <!-- Suite XML path - CRM -->
         <suite.signin.simple>src/test/resources/suites/CRM/SignIn-simple.xml</suite.signin.simple>
         <suite.signin.parallel>src/test/resources/suites/CRM/SignIn-parallel-methods.xml</suite.signin.parallel>
-        <suite.client.parallel>src/test/resources/suites/CRM/Clients-parallel.xml</suite.client.parallel>
-        <suite.client.simple>src/test/resources/suites/CRM/Clients-simple.xml</suite.client.simple>
-        <!-- Suite XML path - CMS -->
-        <suite.login>src/test/resources/suites/CMS/LoginTestCMS.xml</suite.login>
-        <suite.addproduct>src/test/resources/suites/CMS/AddProductCMS.xml</suite.addproduct>
-        <suite.order>src/test/resources/suites/CMS/OrderProductCMS.xml</suite.order>
+        <suite.dashboard.parallel>src/test/resources/suites/CRM/Dashboard-parallel-methods.xml</suite.dashboard.parallel>
+        <suite.topbar.parallel>src/test/resources/suites/CRM/TopBarTest-parallel-methods.xml</suite.topbar.parallel>
+        <suite.project.parallel>src/test/resources/suites/CRM/Project-parallel-methods.xml</suite.project.parallel>
+        <suite.project.classes>src/test/resources/suites/CRM/Project-parallel-classes.xml</suite.project.classes>
+        <suite.project.simple>src/test/resources/suites/CRM/Project-simple.xml</suite.project.simple>
         <!-- Suite XML path - ALL -->
         <suite.all>src/test/resources/suites/SuiteAll.xml</suite.all>
         <suiteXmlFile>${suite.all}</suiteXmlFile>

@@ -6,7 +6,7 @@
         <listener class-name="com.practiceCRM.listeners.AnnotationTransformer"/>
     </listeners>
 
-    <test name="SignIn Test" parallel="methods">
+    <test name="SignIn Test" parallel="methods" thread-count="2">
         <parameter name="BROWSER" value="chrome"/>
         <classes>
             <class name="com.practiceCRM.projects.crm.testcases.LoginTest"/>
