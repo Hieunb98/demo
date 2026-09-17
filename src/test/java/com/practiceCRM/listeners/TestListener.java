@@ -131,8 +131,8 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
       // Nén thư mục report lại thành đuôi .zip
       ZipUtils.zipReportFolder();
 
-      // Gửi đường dẫn file qua Telegram tự động
-      TelegramManager.sendReportPath();
+      // Gửi thông báo tóm tắt và file báo cáo qua Telegram tự động (chỉ gửi 1 lần)
+      TelegramManager.sendSummaryReport(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
 
       // Gửi email báo cáo số lượng PASS/FAIL
       EmailSendUtils.sendEmail(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);

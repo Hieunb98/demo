@@ -64,6 +64,9 @@ jobs:
          # 3. Chạy toàn bộ test cases
          -  name: Run test with Maven
             shell: bash
+            env:
+               TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+               TELEGRAM_CHATID: ${{ secrets.TELEGRAM_CHATID }}
             run: |
                SUITE_NAME="${{ github.event.inputs.suite || 'SuiteAll.xml' }}"
                BROWSER_NAME="${{ github.event.inputs.browser || 'chrome' }}"
