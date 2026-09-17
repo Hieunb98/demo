@@ -538,6 +538,7 @@ public class ProjectPageCRM extends CommonPageCRM {
     public void removeUploadedFile() {
         waitForElementClickable(btnDeleteUploadedFile, 5);
         clickElement(btnDeleteUploadedFile);
+        waitForElementInvisible(btnDeleteUploadedFile, 5);
     }
 
     @Step("Click nút Back trên màn hình Preview Import")
@@ -550,7 +551,8 @@ public class ProjectPageCRM extends CommonPageCRM {
     // --- 10.2 File Upload & Import Execution ---
     @Step("Upload file và xác nhận Import projects: {0}")
     public void importProjectsFileSuccess(String filePath, FailureHandling flowControl) {
-        waitForElementVisible(dropzoneContainer, 10);
+        waitForElementPresent(dropzoneContainer, 10);
+        waitForElementPresent(inputImportFile, 10);
         uploadFileWithSendKeys(inputImportFile, filePath);
         verifyUploadedFileName(filePath, flowControl);
         waitForElementClickable(btnImportNext, 15);
@@ -1111,13 +1113,21 @@ public class ProjectPageCRM extends CommonPageCRM {
             waitForPageLoaded();
         }
 
-        List<String> rowTitles = getListElementsText(tableCellTitles);
-        verifyTrue(!rowTitles.isEmpty(), "Bảng không có bản ghi nào sau khi search từ khóa: '" + keyword + "'",
-                flowControl);
+        List<WebElement> rows = getWebElements(tableRows);
+        verifyTrue(!rows.isEmpty(), "Bảng không có bản ghi nào sau khi search từ khóa: '" + keyword + "'", flowControl);
 
-        for (String title : rowTitles) {
-            verifyTrue(title.toLowerCase().trim().contains(keyword.toLowerCase().trim()),
-                    "Bản ghi '" + title + "' trên bảng không chứa từ khóa tìm kiếm: '" + keyword + "'", flowControl);
+        for (WebElement row : rows) {
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            // Bỏ qua dòng trống (DataTables empty row: No matching records found / No data available)
+            if (cells.size() < 2 || row.getAttribute("class").contains("dataTables_empty") || cells.get(0).getAttribute("class").contains("dataTables_empty")) {
+                continue;
+            }
+
+            String id = cells.get(0).getText().trim();
+            String title = cells.get(1).getText().trim();
+
+            verifyTrue(title.toLowerCase().contains(keyword.toLowerCase().trim()),
+                    "Bản ghi [ID: " + id + " - Title: '" + title + "'] trên bảng không chứa từ khóa tìm kiếm: '" + keyword + "'", flowControl);
         }
     }
 

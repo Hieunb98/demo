@@ -187,10 +187,6 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
    }
 
    /**
-    * Đọc thông tin từ file config executor.json mẫu, cập nhật các trường động nếu chạy trên GitHub Actions CI/CD,
-    * rồi ghi vào target/allure-results/executor.json.
-    */
-   /**
     * Tự động sinh file executor.json để hiển thị widget EXECUTORS trên Allure Report.
     * Tự động 100% nhận diện thông tin từ GitHub Actions CI/CD hoặc môi trường Local.
     */

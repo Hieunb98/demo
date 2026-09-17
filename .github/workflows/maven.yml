@@ -99,10 +99,7 @@ jobs:
             shell: bash
             run: |
                mvn allure:report --file pom.xml
-               if [ -f target/allure-results/executor.json ]; then
-                  mkdir -p target/site/allure-maven-plugin/widgets
-                  echo "[$(cat target/allure-results/executor.json)]" > target/site/allure-maven-plugin/widgets/executors.json || true
-               fi
+               python -c "import json, os; src='target/allure-results/executor.json'; dest='target/site/allure-maven-plugin/widgets/executors.json'; os.makedirs(os.path.dirname(dest), exist_ok=True); (json.dump([json.load(open(src, encoding='utf-8'))], open(dest, 'w', encoding='utf-8'), indent=2)) if os.path.exists(src) else None"
 
          # 7. Upload Extent Report lên Artifacts (HTML và PDF)
          -  name: Upload Extent Report
