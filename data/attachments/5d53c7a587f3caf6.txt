@@ -1,1 +1,0 @@
-Click on element with JS: By.xpath: //div[@id='label-show-area']//span[normalize-space()='Temp_NoColor_1789684531664_Edited']
