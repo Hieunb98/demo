@@ -35,8 +35,8 @@ on:
       branches: [ "main" ]         # Trigger khi push lên main
    pull_request:
       branches: [ "main" ]         # Trigger khi tạo PR vào main
-   schedule:
-      - cron: '0 19 * * *'         # Nightly build tự động chạy lúc 2h00 sáng VN (19:00 UTC)
+   # schedule:
+   #    - cron: '0 19 * * *'         # Nightly build tự động chạy lúc 2h00 sáng VN (19:00 UTC)
 
 jobs:
    build:
@@ -106,11 +106,11 @@ jobs:
             shell: pwsh
             run: |
                if (Test-Path "target/allure-results/executor.json") {
-                   $data = Get-Content "target/allure-results/executor.json" -Raw | ConvertFrom-Json
+                   $json = (Get-Content "target/allure-results/executor.json" -Raw).Trim()
                    $dest = "target/site/allure-maven-plugin/widgets/executors.json"
                    New-Item -ItemType Directory -Force -Path "target/site/allure-maven-plugin/widgets" | Out-Null
-                   @($data) | ConvertTo-Json -Depth 5 | Set-Content $dest -Encoding UTF8
-                   Write-Host "Overwritten $dest successfully with GitHub Actions executor!"
+                   "[$json]" | Set-Content $dest -Encoding UTF8
+                   Write-Host "Overwritten $dest successfully as JSON Array!"
                } else {
                    Write-Host "File target/allure-results/executor.json NOT found!"
                }

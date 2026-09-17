@@ -13,20 +13,40 @@ import com.pengrad.telegrambot.response.SendResponse;
 import java.io.File;
 
 public class TelegramManager {
-    private static String Token = FrameworkConstants.TELEGRAM_TOKEN;
-    private static String ChatId = FrameworkConstants.TELEGRAM_CHATID;
-    private static TelegramBot bot = new TelegramBot(Token);
+    private static TelegramBot bot;
     private static File input = new File(FrameworkConstants.EXTENT_REPORT_FILE_PATH);
+    private static final String TELEGRAM_SENT_FLAG_PATH = "target/.telegram_sent";
+
+    private static synchronized TelegramBot getBot() {
+        if (bot == null) {
+            String token = FrameworkConstants.TELEGRAM_TOKEN;
+            if (token != null && !token.trim().isEmpty()) {
+                bot = new TelegramBot(token.trim());
+            }
+        }
+        return bot;
+    }
+
+    private static String getChatId() {
+        return FrameworkConstants.TELEGRAM_CHATID;
+    }
 
     public static boolean sendFilePath(String filePath) {
+        TelegramBot currentBot = getBot();
+        String chatId = getChatId();
+        if (currentBot == null || chatId == null || chatId.trim().isEmpty()) {
+            LogUtils.warn("Chưa cấu hình TELEGRAM_TOKEN hoặc TELEGRAM_CHATID, bỏ qua gửi Telegram.");
+            return false;
+        }
+
         boolean success = false;
         try {
             File input = new File(SystemHelpers.getCurrentDir() + filePath);
-            SendDocument request = new SendDocument(ChatId, input).parseMode(ParseMode.HTML).disableNotification(true);
-            SendResponse sendResponse = bot.execute(request);
+            SendDocument request = new SendDocument(chatId, input).parseMode(ParseMode.HTML).disableNotification(true);
+            SendResponse sendResponse = currentBot.execute(request);
             boolean ok = sendResponse.isOk();
             success = ok;
-            if (ok != true) {
+            if (!ok) {
                 Message message = sendResponse.message();
                 LogUtils.warn("Message response from Telegram: " + message);
             }
@@ -35,8 +55,6 @@ public class TelegramManager {
         }
         return success;
     }
-
-    private static final String TELEGRAM_SENT_FLAG_PATH = "target/.telegram_sent";
 
     public static synchronized void sendReportPath() {
         if (!FrameworkConstants.SEND_REPORT_TO_TELEGRAM.equalsIgnoreCase(FrameworkConstants.YES)) {
@@ -48,23 +66,16 @@ public class TelegramManager {
             return; // Đã gửi trong lượt chạy này rồi, bỏ qua
         }
 
-        try {
-            if (input.exists()) {
-                SendDocument request = new SendDocument(ChatId, input)
-                        .caption("📊 <b>Báo cáo chi tiết ExtentReports</b>")
-                        .parseMode(ParseMode.HTML);
-                SendResponse sendResponse = bot.execute(request);
-                if (sendResponse.isOk()) {
-                    markAsSent();
-                    LogUtils.info("Đã gửi file báo cáo ExtentReports lên Telegram thành công.");
-                } else {
-                    LogUtils.warn("Phản hồi từ Telegram: " + sendResponse.message());
-                }
-            } else {
-                LogUtils.warn("Không tìm thấy file báo cáo để gửi Telegram: " + input.getAbsolutePath());
-            }
-        } catch (Exception e) {
-            LogUtils.error("Lỗi khi gửi báo cáo HTML lên Telegram: " + e.getMessage());
+        TelegramBot currentBot = getBot();
+        String chatId = getChatId();
+        if (currentBot == null || chatId == null || chatId.trim().isEmpty()) {
+            LogUtils.warn("Chưa cấu hình TELEGRAM_TOKEN hoặc TELEGRAM_CHATID, không gửi file Telegram.");
+            return;
+        }
+
+        boolean sent = sendReportFileInternal(currentBot, chatId);
+        if (sent) {
+            markAsSent();
         }
     }
 
@@ -76,6 +87,13 @@ public class TelegramManager {
         File flagFile = new File(TELEGRAM_SENT_FLAG_PATH);
         if (flagFile.exists()) {
             return; // Đã gửi trong lượt chạy này rồi, không gửi lại
+        }
+
+        TelegramBot currentBot = getBot();
+        String chatId = getChatId();
+        if (currentBot == null || chatId == null || chatId.trim().isEmpty()) {
+            LogUtils.warn("Chưa cấu hình TELEGRAM_TOKEN hoặc TELEGRAM_CHATID, không gửi tin nhắn Telegram.");
+            return;
         }
 
         String runNumber = System.getenv("GITHUB_RUN_NUMBER");
@@ -108,11 +126,36 @@ public class TelegramManager {
                 + "━━━━━━━━━━━━━━━━━━━\n"
                 + "🔗 <a href=\"https://hieunb98.github.io/demo\">Xem Allure Report trực tuyến</a>";
 
-        boolean sent = sendMessageText(message);
-        if (sent) {
-            markAsSent();
+        // 1. Gửi tin nhắn tóm tắt
+        sendMessageText(message);
+
+        // 2. Gửi kèm file báo cáo ExtentReports
+        sendReportFileInternal(currentBot, chatId);
+
+        // 3. Đánh dấu đã gửi xong cả tin nhắn lẫn file báo cáo
+        markAsSent();
+    }
+
+    private static boolean sendReportFileInternal(TelegramBot currentBot, String chatId) {
+        try {
+            if (input.exists()) {
+                SendDocument request = new SendDocument(chatId, input)
+                        .caption("📊 <b>Báo cáo chi tiết ExtentReports</b>")
+                        .parseMode(ParseMode.HTML);
+                SendResponse sendResponse = currentBot.execute(request);
+                if (sendResponse.isOk()) {
+                    LogUtils.info("Đã gửi file báo cáo ExtentReports lên Telegram thành công.");
+                    return true;
+                } else {
+                    LogUtils.warn("Phản hồi từ Telegram: " + sendResponse.message());
+                }
+            } else {
+                LogUtils.warn("Không tìm thấy file báo cáo để gửi Telegram: " + input.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            LogUtils.error("Lỗi khi gửi báo cáo HTML lên Telegram: " + e.getMessage());
         }
-        sendReportPath();
+        return false;
     }
 
     private static void markAsSent() {
@@ -123,19 +166,16 @@ public class TelegramManager {
         } catch (Exception ignored) {}
     }
 
-    // chỗ này check nếu gửi thành công thì xóa file luôn
-    // public static boolean deleteReportFile() {
-    // boolean success = false;
-    // success = sendReportPath();
-    // if (success == true) {
-    // input.delete();
-    // }
-    // return success;
-    // }
-
     public static boolean sendMessageText(String messageText) {
-        SendMessage request = new SendMessage(ChatId, messageText).parseMode(ParseMode.HTML);
-        SendResponse sendResponse = bot.execute(request);
+        TelegramBot currentBot = getBot();
+        String chatId = getChatId();
+        if (currentBot == null || chatId == null || chatId.trim().isEmpty()) {
+            LogUtils.warn("Chưa cấu hình TELEGRAM_TOKEN hoặc TELEGRAM_CHATID, không gửi tin nhắn Telegram.");
+            return false;
+        }
+
+        SendMessage request = new SendMessage(chatId, messageText).parseMode(ParseMode.HTML);
+        SendResponse sendResponse = currentBot.execute(request);
         boolean ok = sendResponse.isOk();
         if (ok) {
             LogUtils.info("Send message to Telegram: " + messageText);
