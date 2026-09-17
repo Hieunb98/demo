@@ -1059,9 +1059,14 @@ public class ProjectPageCRM extends CommonPageCRM {
     // =====================================================================
     // 13. ACTIONS & VERIFICATIONS: SEARCH & FILTER
     // =====================================================================
+    @Step("Cuộn lên đầu trang")
+    public void scrollToTop() {
+        executeScript("window.scrollTo(0, 0); document.querySelectorAll('.page-container, #content, #page-content, body, html').forEach(function(el){ el.scrollTop = 0; });");
+    }
+
     @Step("Tìm kiếm dự án với từ khóa: {0}")
     public void searchProject(String keyword) {
-        executeScript("window.scrollTo(0, 0); document.querySelectorAll('.page-container, #content, body, html').forEach(function(el){ el.scrollTop = 0; });");
+        scrollToTop();
         waitForElementPresent(inputSearch, 10);
         scrollToElementAtTop(inputSearch);
         waitForElementVisible(inputSearch, 10);
@@ -1118,6 +1123,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Lọc theo Status: {0}")
     public void filterByStatus(String statusName) {
+        scrollToTop();
         waitForElementVisible(dropdownStatus, 10);
         clickElement(dropdownStatus);
         List<WebElement> activeList = getWebElements(statusFilterItemsActive);
@@ -1140,6 +1146,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Lọc theo nhiều Status đồng thời: {0}")
     public void filterByMultipleStatuses(List<String> statusNames) {
+        scrollToTop();
         waitForElementVisible(dropdownStatus, 10);
         clickElement(dropdownStatus);
         List<WebElement> activeList = getWebElements(statusFilterItemsActive);
@@ -1253,7 +1260,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Xác thực tất cả các dòng trên bảng có Status thuộc danh sách: {0} (Soft Assert)")
     public void verifyAllRowsHaveAnyOfStatuses(List<String> expectedStatuses, FailureHandling flowControl) {
-        waitForElementVisible(tableProjects, 10);
+        waitForElementPresent(tableProjects, 10);
         if (getTotalRecordsCount() > 10) {
             changePageLength("All");
         }
@@ -1278,6 +1285,7 @@ public class ProjectPageCRM extends CommonPageCRM {
                         flowControl);
             }
         }
+        scrollToTop();
     }
 
     @Step("Xác thực bộ lọc Status đã được reset về Tất cả (All)")
@@ -1307,6 +1315,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Lọc theo Label: {0}")
     public void filterByLabel(String labelName) {
+        scrollToTop();
         waitForElementVisible(dropdownLabels, 10);
         clickElement(dropdownLabels);
         By labelOption = getLabelFilterOptionLocator(labelName);
@@ -1363,6 +1372,7 @@ public class ProjectPageCRM extends CommonPageCRM {
                     "Dòng dự án trên bảng không chứa nhãn Label='" + expectedLabel + "'",
                     flowControl);
         }
+        scrollToTop();
     }
 
     @Step("Xác thực kết quả tìm kiếm không có Label")
@@ -1376,6 +1386,7 @@ public class ProjectPageCRM extends CommonPageCRM {
     // --- 13.1 Thao tác chọn Dropdown Deadline ---
     @Step("Lọc theo Deadline: {0}")
     public void filterByDeadline(String deadlineOption) {
+        scrollToTop();
         waitForElementVisible(dropdownDeadline, 10);
         clickElement(dropdownDeadline);
         By optionLocator = getDeadlineOptionLocator(deadlineOption);
@@ -1388,6 +1399,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Lọc theo Deadline Custom với ngày cụ thể: {0}")
     public void filterByDeadlineCustom(String customDate) {
+        scrollToTop();
         waitForElementVisible(dropdownDeadline, 10);
         clickElement(dropdownDeadline);
         By optionLocator = getDeadlineOptionLocator(ProjectModel.DEADLINE_CUSTOM);
@@ -1419,15 +1431,18 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Xác thực tất cả các dòng trên bảng thỏa mãn bộ lọc Deadline: {0} (Soft Assert)")
     public void verifyAllRowsHaveDeadline(String expectedDeadline, FailureHandling flowControl) {
-        changePageLength("All");
-        waitForElementInvisible(tableProcessing, 5);
-        waitForPageLoaded();
-
+        scrollToTop();
         String buttonText = getTextElement(dropdownDeadline);
         verifyTrue(buttonText.contains(expectedDeadline),
                 "Dropdown Deadline hiển thị text không khớp: '" + buttonText + "', mong đợi chứa: '" + expectedDeadline
                         + "'",
                 flowControl);
+
+        if (getTotalRecordsCount() > 10) {
+            changePageLength("All");
+            waitForElementInvisible(tableProcessing, 5);
+            waitForPageLoaded();
+        }
 
         List<String> rowDeadlines = getListElementsText(tableCellDeadlines);
         verifyTrue(!rowDeadlines.isEmpty(), "Bảng không có bản ghi nào sau khi lọc theo Deadline: " + expectedDeadline,
@@ -1470,6 +1485,7 @@ public class ProjectPageCRM extends CommonPageCRM {
                 LogUtils.warn("Không parse được ngày deadline: " + d + " (" + e.getMessage() + ")");
             }
         }
+        scrollToTop();
     }
 
     public static String formatDeadlineButtonDate(LocalDate date) {
@@ -1504,10 +1520,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Xác thực tất cả các dòng trên bảng thỏa mãn bộ lọc Deadline Custom: {0} (Soft Assert)")
     public void verifyAllRowsHaveDeadlineCustom(String expectedCustomDate, FailureHandling flowControl) {
-        changePageLength("All");
-        waitForElementInvisible(tableProcessing, 5);
-        waitForPageLoaded();
-
+        scrollToTop();
         LocalDate customTarget = LocalDate.parse(expectedCustomDate.trim());
         String expectedButtonDate = formatDeadlineButtonDate(customTarget);
         String buttonText = getTextElement(dropdownDeadline);
@@ -1515,6 +1528,12 @@ public class ProjectPageCRM extends CommonPageCRM {
                 "Dropdown Deadline hiển thị text không khớp ngày đã chọn: '" + buttonText + "', mong đợi chứa: '"
                         + expectedButtonDate + "'",
                 flowControl);
+
+        if (getTotalRecordsCount() > 10) {
+            changePageLength("All");
+            waitForElementInvisible(tableProcessing, 5);
+            waitForPageLoaded();
+        }
 
         List<String> rowDeadlines = getListElementsText(tableCellDeadlines);
         verifyTrue(!rowDeadlines.isEmpty(),
@@ -1531,6 +1550,7 @@ public class ProjectPageCRM extends CommonPageCRM {
                 LogUtils.warn("Không parse được ngày deadline: " + d + " (" + e.getMessage() + ")");
             }
         }
+        scrollToTop();
     }
 
     // =====================================================================
@@ -1539,6 +1559,7 @@ public class ProjectPageCRM extends CommonPageCRM {
     // --- 14.1 Thao tác chọn Dropdown Start date ---
     @Step("Lọc theo Start date: {0}")
     public void filterByStartDate(String optionName) {
+        scrollToTop();
         waitForElementVisible(dropdownStartDate, 10);
         clickElement(dropdownStartDate);
         By optionLocator = getStartDateOptionLocator(optionName);
@@ -1551,6 +1572,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Lọc theo Start date Custom với khoảng ngày: from={0}, to={1}")
     public void filterByStartDateCustom(String fromDate, String toDate) {
+        scrollToTop();
         new org.openqa.selenium.support.ui.WebDriverWait(com.practiceCRM.driver.DriverManager.getDriver(),
                 java.time.Duration.ofSeconds(10))
                 .until(driver -> (Boolean) ((org.openqa.selenium.JavascriptExecutor) driver)
@@ -1595,10 +1617,7 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     @Step("Xác thực tất cả các dòng trên bảng thỏa mãn bộ lọc Start date: {0} (Soft Assert)")
     public void verifyAllRowsHaveStartDate(String expectedOption, FailureHandling flowControl) {
-        changePageLength("All");
-        waitForElementInvisible(tableProcessing, 5);
-        waitForPageLoaded();
-
+        scrollToTop();
         LocalDate today = LocalDate.now();
         LocalDate expectedFrom;
         LocalDate expectedTo;
@@ -1639,6 +1658,12 @@ public class ProjectPageCRM extends CommonPageCRM {
                 "Nút Start date to hiển thị không đúng: '" + toText + "', mong đợi chứa: '" + expectedToStr + "'",
                 flowControl);
 
+        if (getTotalRecordsCount() > 10) {
+            changePageLength("All");
+            waitForElementInvisible(tableProcessing, 5);
+            waitForPageLoaded();
+        }
+
         List<String> rowStartDates = getListElementsText(tableCellStartDates);
         verifyTrue(!rowStartDates.isEmpty(),
                 "Bảng không có bản ghi nào sau khi lọc theo Start date: " + expectedOption, flowControl);
@@ -1655,6 +1680,7 @@ public class ProjectPageCRM extends CommonPageCRM {
                 LogUtils.warn("Không parse được ngày Start date: " + d + " (" + e.getMessage() + ")");
             }
         }
+        scrollToTop();
     }
 
     @Step("Xác thực tất cả các dòng trên bảng thỏa mãn bộ lọc Start date Custom: from={0}, to={1}")
@@ -1665,9 +1691,7 @@ public class ProjectPageCRM extends CommonPageCRM {
     @Step("Xác thực tất cả các dòng trên bảng thỏa mãn bộ lọc Start date Custom: from={0}, to={1} (Soft Assert)")
     public void verifyAllRowsHaveStartDateCustom(String expectedFromDate, String expectedToDate,
             FailureHandling flowControl) {
-        changePageLength("All");
-        waitForPageLoaded();
-
+        scrollToTop();
         LocalDate fromTarget = LocalDate.parse(expectedFromDate.trim());
         LocalDate toTarget = LocalDate.parse(expectedToDate.trim());
 
@@ -1684,6 +1708,12 @@ public class ProjectPageCRM extends CommonPageCRM {
                 "Nút Start date to hiển thị text không khớp ngày đã chọn: '" + toText + "', mong đợi chứa: '"
                         + expectedToStr + "'",
                 flowControl);
+
+        if (getTotalRecordsCount() > 10) {
+            changePageLength("All");
+            waitForElementInvisible(tableProcessing, 5);
+            waitForPageLoaded();
+        }
 
         List<String> rowStartDates = getListElementsText(tableCellStartDates);
         LogUtils.info(
@@ -1705,6 +1735,7 @@ public class ProjectPageCRM extends CommonPageCRM {
                 LogUtils.warn("Không parse được ngày Start date: " + d + " (" + e.getMessage() + ")");
             }
         }
+        scrollToTop();
     }
 
     @Step("Xác thực bảng có hiển thị dự án: {0}")
@@ -1955,13 +1986,14 @@ public class ProjectPageCRM extends CommonPageCRM {
     // =====================================================================
     @Step("Thay đổi số lượng dòng hiển thị: {0}")
     public void changePageLength(String length) {
-        waitForElementVisible(tableProjects, 10);
+        waitForElementPresent(tableProjects, 10);
         executeScript(
                 "if(window.$ && $.fn.DataTable && $('#project-table').length) { var len = (arguments[0] === 'All' || arguments[0] === '-1') ? -1 : parseInt(arguments[0]); $('#project-table').DataTable().page.len(len).draw(); if($('.dataTables_length select').length) { $('.dataTables_length select').val(len); } }",
                 length);
-        waitForElementInvisible(tableProcessing, 5);
+        waitForElementInvisible(tableProcessing, 10);
         waitForElementInvisible(tableEmptyMessage, 5);
         waitForPageLoaded();
+        scrollToTop();
     }
 
     @Step("Click nút Next trang")

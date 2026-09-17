@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <!-- name: Tên hiển thị (thân thiện) của project -->
-    <name>PracticeAutomationSeleniumJava</name>
+    <name>CRM-Automation-Framework</name>
 
     <!-- url: Đường link GitHub hoặc trang web của project -->
     <url>https://github.com/Hieunb98/demo.git</url>

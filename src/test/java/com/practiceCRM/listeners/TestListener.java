@@ -183,7 +183,89 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
       // FileHelpers.copyFile("src/test/resources/config/allure/environment.xml",
       // "target/allure-results/environment.xml");
       FileHelpers.copyFile("src/test/resources/config/allure/categories.json", "target/allure-results/categories.json");
-      FileHelpers.copyFile("src/test/resources/config/allure/executor.json", "target/allure-results/executor.json");
+      setAllureExecutorInformation();
+   }
+
+   /**
+    * Đọc thông tin từ file config executor.json mẫu, cập nhật các trường động nếu chạy trên GitHub Actions CI/CD,
+    * rồi ghi vào target/allure-results/executor.json.
+    */
+   /**
+    * Tự động sinh file executor.json để hiển thị widget EXECUTORS trên Allure Report.
+    * Tự động 100% nhận diện thông tin từ GitHub Actions CI/CD hoặc môi trường Local.
+    */
+   private void setAllureExecutorInformation() {
+      try {
+         String isGitHubActions = System.getenv("GITHUB_ACTIONS");
+         String name;
+         String type;
+         String url = "";
+         long buildOrder = 1;
+         String buildName;
+         String buildUrl = "";
+         String reportUrl = "";
+         String reportName = "Allure Report | CRM-Automation-Framework";
+
+         if ("true".equalsIgnoreCase(isGitHubActions)) {
+            name = "GitHub Actions";
+            type = "github";
+
+            String serverUrl = System.getenv("GITHUB_SERVER_URL");
+            if (serverUrl == null || serverUrl.isEmpty()) {
+               serverUrl = "https://github.com";
+            }
+            String repo = System.getenv("GITHUB_REPOSITORY"); // Ví dụ: owner/repository-name
+            String runId = System.getenv("GITHUB_RUN_ID");
+            String runNumber = System.getenv("GITHUB_RUN_NUMBER");
+            String actor = System.getenv("GITHUB_ACTOR");
+
+            if (repo != null && !repo.isEmpty()) {
+               url = serverUrl + "/" + repo;
+               buildUrl = (runId != null && !runId.isEmpty()) ? url + "/actions/runs/" + runId : url + "/actions";
+
+               // Tự động suy ra URL của GitHub Pages: https://<owner>.github.io/<repo-name>
+               String[] parts = repo.split("/");
+               if (parts.length == 2) {
+                  reportUrl = "https://" + parts[0].toLowerCase() + ".github.io/" + parts[1];
+               }
+            }
+
+            if (runNumber != null && !runNumber.isEmpty()) {
+               try {
+                  buildOrder = Long.parseLong(runNumber.trim());
+               } catch (NumberFormatException ignored) {}
+               buildName = "Run #" + runNumber + (actor != null ? " (" + actor + ")" : "");
+            } else {
+               buildName = "GitHub Actions Run";
+            }
+         } else {
+            name = "Local Machine";
+            type = "custom";
+            buildName = "Local Run (" + System.getProperty("user.name") + ")";
+         }
+
+         java.util.Map<String, Object> executorData = new java.util.LinkedHashMap<>();
+         executorData.put("name", name);
+         executorData.put("type", type);
+         executorData.put("url", url);
+         executorData.put("buildOrder", buildOrder);
+         executorData.put("buildName", buildName);
+         executorData.put("buildUrl", buildUrl);
+         executorData.put("reportUrl", reportUrl);
+         executorData.put("reportName", reportName);
+
+         java.io.File targetDir = new java.io.File("target/allure-results");
+         if (!targetDir.exists()) {
+            targetDir.mkdirs();
+         }
+         java.io.File executorFile = new java.io.File(targetDir, "executor.json");
+         new com.fasterxml.jackson.databind.ObjectMapper()
+               .writerWithDefaultPrettyPrinter()
+               .writeValue(executorFile, executorData);
+         LogUtils.info("Đã sinh thông tin executor.json cho Allure Report thành công.");
+      } catch (Exception e) {
+         LogUtils.warn("Không thể tạo file executor.json: " + e.getMessage());
+      }
    }
 
    public AuthorType[] getAuthorType(ITestResult iTestResult) {

@@ -10,7 +10,7 @@ import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@Epic("CRM Project")
+@Epic("Regression Test CRM")
 @Feature("Top Bar Features")
 public class TopBarTest extends BaseTest {
 

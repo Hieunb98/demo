@@ -1,35 +1,36 @@
 [
    {
-      "name": "Ignored tests",
+      "name": "Product defects (Assertion Failures)",
       "matchedStatuses": [
-         "skipped"
+         "failed"
       ]
    },
    {
-      "name": "Infrastructure problems",
+      "name": "Test defects (Runtime Exceptions)",
+      "matchedStatuses": [
+         "broken"
+      ]
+   },
+   {
+      "name": "Timeout & Locator Issues",
       "matchedStatuses": [
          "broken",
          "failed"
       ],
-      "messageRegex": ".*bye-bye.*"
+      "traceRegex": ".*(TimeoutException|NoSuchElementException|StaleElementReferenceException|ElementClickInterceptedException).*"
    },
    {
-      "name": "Outdated tests",
+      "name": "Infrastructure & Network Problems",
       "matchedStatuses": [
-         "broken"
-      ],
-      "traceRegex": ".*FileNotFoundException.*"
-   },
-   {
-      "name": "Product defects",
-      "matchedStatuses": [
+         "broken",
          "failed"
-      ]
+      ],
+      "messageRegex": ".*(502 Bad Gateway|503 Service Unavailable|504 Gateway Time-out|Connection refused|timed out).*"
    },
    {
-      "name": "Test defects",
+      "name": "Ignored & Skipped Tests",
       "matchedStatuses": [
-         "broken"
+         "skipped"
       ]
    }
 ]
