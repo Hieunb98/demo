@@ -1,0 +1,11 @@
+com.practiceCRM.annotations
+com.practiceCRM.config
+com.practiceCRM.constants
+com.practiceCRM.driver
+com.practiceCRM.enums
+com.practiceCRM.exceptions
+com.practiceCRM.helpers
+com.practiceCRM.keywords
+com.practiceCRM.mail
+com.practiceCRM.reports
+com.practiceCRM.utils
