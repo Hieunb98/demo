@@ -131,11 +131,12 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
       // Nén thư mục report lại thành đuôi .zip
       ZipUtils.zipReportFolder();
 
-      // Gửi thông báo tóm tắt và file báo cáo qua Telegram tự động (chỉ gửi 1 lần)
-      TelegramManager.sendSummaryReport(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
-
-      // Gửi email báo cáo số lượng PASS/FAIL
-      EmailSendUtils.sendEmail(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
+      // Chỉ gửi Telegram và Email khi toàn bộ Suite lớn hoàn thành (không gửi ở các suite con trung gian)
+      boolean isRootSuite = (iSuite.getXmlSuite().getParentSuite() == null);
+      if (isRootSuite) {
+         TelegramManager.sendSummaryReport(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
+         EmailSendUtils.sendEmail(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
+      }
 
       // Determine Browsers
       Set<String> browsers = new java.util.HashSet<>();

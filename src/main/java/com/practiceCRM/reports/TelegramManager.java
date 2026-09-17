@@ -36,14 +36,16 @@ public class TelegramManager {
         return success;
     }
 
-    private static boolean isReportSent = false;
+    private static final String TELEGRAM_SENT_FLAG_PATH = "target/.telegram_sent";
 
     public static synchronized void sendReportPath() {
         if (!FrameworkConstants.SEND_REPORT_TO_TELEGRAM.equalsIgnoreCase(FrameworkConstants.YES)) {
             return;
         }
-        if (isReportSent) {
-            return; // Đã gửi rồi thì không gửi lại nữa
+
+        File flagFile = new File(TELEGRAM_SENT_FLAG_PATH);
+        if (flagFile.exists()) {
+            return; // Đã gửi trong lượt chạy này rồi, bỏ qua
         }
 
         try {
@@ -53,7 +55,7 @@ public class TelegramManager {
                         .parseMode(ParseMode.HTML);
                 SendResponse sendResponse = bot.execute(request);
                 if (sendResponse.isOk()) {
-                    isReportSent = true;
+                    markAsSent();
                     LogUtils.info("Đã gửi file báo cáo ExtentReports lên Telegram thành công.");
                 } else {
                     LogUtils.warn("Phản hồi từ Telegram: " + sendResponse.message());
@@ -66,24 +68,59 @@ public class TelegramManager {
         }
     }
 
-    public static void sendSummaryReport(int total, int passed, int failed, int skipped) {
+    public static synchronized void sendSummaryReport(int total, int passed, int failed, int skipped) {
         if (!FrameworkConstants.SEND_REPORT_TO_TELEGRAM.equalsIgnoreCase(FrameworkConstants.YES)) {
             return;
         }
 
-        String statusEmoji = (failed == 0) ? "✅ PASS TOÀN BỘ" : "❌ CÓ TEST FAIL";
+        File flagFile = new File(TELEGRAM_SENT_FLAG_PATH);
+        if (flagFile.exists()) {
+            return; // Đã gửi trong lượt chạy này rồi, không gửi lại
+        }
+
+        String runNumber = System.getenv("GITHUB_RUN_NUMBER");
+        String actor = System.getenv("GITHUB_ACTOR");
+        String branch = System.getenv("GITHUB_REF_NAME");
+        String currentTime = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+
+        String buildInfo;
+        if (runNumber != null && !runNumber.isEmpty()) {
+            buildInfo = "Build #" + runNumber + (branch != null ? " (nhánh " + branch + ")" : "");
+        } else {
+            buildInfo = "Local Run (" + System.getProperty("user.name") + ")";
+        }
+
+        String actorInfo = (actor != null && !actor.isEmpty()) ? actor : System.getProperty("user.name");
+        String browserInfo = (FrameworkConstants.BROWSER != null ? FrameworkConstants.BROWSER : "Chrome")
+                + ("true".equalsIgnoreCase(FrameworkConstants.HEADLESS) ? " (Headless)" : " (Headed)");
+
+        String statusEmoji = (failed == 0) ? "✅ PASS TOÀN BỘ" : "❌ CÓ " + failed + " TEST FAIL";
+
         String message = "🚀 <b>KẾT QUẢ AUTOMATION TEST CRM</b> 🚀\n\n"
-                + "Trạng thái: <b>" + statusEmoji + "</b>\n"
+                + "🔖 Lần chạy: <b>" + buildInfo + "</b>\n"
+                + "👤 Người chạy: <b>" + actorInfo + "</b>\n"
+                + "🕒 Thời gian: <b>" + currentTime + "</b>\n"
+                + "🌐 Môi trường: <b>" + browserInfo + "</b>\n"
                 + "━━━━━━━━━━━━━━━━━━━\n"
+                + "Trạng thái: <b>" + statusEmoji + "</b>\n"
                 + "📊 Tổng số test cases: <b>" + total + "</b>\n"
-                + "✅ Passed: <b>" + passed + "</b>\n"
-                + "❌ Failed: <b>" + failed + "</b>\n"
-                + "⚠️ Skipped: <b>" + skipped + "</b>\n"
+                + "✅ Passed: <b>" + passed + "</b> | ❌ Failed: <b>" + failed + "</b> | ⚠️ Skipped: <b>" + skipped + "</b>\n"
                 + "━━━━━━━━━━━━━━━━━━━\n"
                 + "🔗 <a href=\"https://hieunb98.github.io/demo\">Xem Allure Report trực tuyến</a>";
 
-        sendMessageText(message);
+        boolean sent = sendMessageText(message);
+        if (sent) {
+            markAsSent();
+        }
         sendReportPath();
+    }
+
+    private static void markAsSent() {
+        try {
+            File flagFile = new File(TELEGRAM_SENT_FLAG_PATH);
+            flagFile.getParentFile().mkdirs();
+            flagFile.createNewFile();
+        } catch (Exception ignored) {}
     }
 
     // chỗ này check nếu gửi thành công thì xóa file luôn
