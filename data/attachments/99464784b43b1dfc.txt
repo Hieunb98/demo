@@ -1,1 +1,0 @@
-➕ [ADD PROJECT] Đã tạo dự án: [Title: Auto_Canceled_1789630425987 | Type: Default | Client: None | Price: 4000 | StartDate: 2026-10-10 | Deadline: 2026-11-17 | Label: AI_automation]
