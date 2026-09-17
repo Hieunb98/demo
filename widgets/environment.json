@@ -1,1 +1,1 @@
-[]
+[{"values":["https://rise.anhtester.com/signin"],"name":"URL CRM"},{"values":["local"],"name":"Target Execution"},{"values":["10"],"name":"Explicit Timeout"},{"values":["40"],"name":"Page Load Timeout"},{"values":["true"],"name":"Headless Mode"},{"values":["CHROME"],"name":"Local Browser"},{"values":["localhost"],"name":"Remote URL"},{"values":["4444"],"name":"Remote Port"},{"values":["131"],"name":"TCs Total"},{"values":["123"],"name":"TCs Passed"},{"values":["4"],"name":"TCs Skipped"},{"values":["4"],"name":"TCs Failed"}]

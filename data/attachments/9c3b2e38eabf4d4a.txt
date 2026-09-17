@@ -1,0 +1,1 @@
+Clicked on the element By.cssSelector: a[data-real-target='#clients-quick-list-container']
