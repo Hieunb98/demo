@@ -1,1 +1,0 @@
-❌ Bảng không hiển thị toàn bộ bản ghi khi chọn All (thực tế: 369, tổng: 0).
