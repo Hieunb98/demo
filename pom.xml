@@ -51,7 +51,6 @@
         <lombok.version>1.18.42</lombok.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <zip.version>1.17</zip.version>
-        <java-telegram-bot-api.version>9.4.1</java-telegram-bot-api.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <mysql-connector-j.version>9.6.0</mysql-connector-j.version>
         <json-path.version>3.0.0</json-path.version>
@@ -282,13 +281,6 @@
             <version>${aspectjweaver.version}</version>
         </dependency>
 
-        <!-- telegram_bot -->
-        <!-- https://mvnrepository.com/artifact/com.github.pengrad/java-telegram-bot-api -->
-        <dependency>
-            <groupId>com.github.pengrad</groupId>
-            <artifactId>java-telegram-bot-api</artifactId>
-            <version>${java-telegram-bot-api.version}</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>

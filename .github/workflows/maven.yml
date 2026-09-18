@@ -173,3 +173,69 @@ jobs:
                publish_dir: docs
                destination_dir: docs
                keep_files: true
+
+         # 14. Gửi báo cáo tổng kết duy nhất 1 lần qua Telegram Bot
+         -  name: Send Telegram Notification
+            if: always()
+            shell: pwsh
+            env:
+               TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+               TELEGRAM_CHATID: ${{ secrets.TELEGRAM_CHATID }}
+            run: |
+               $token = $env:TELEGRAM_TOKEN
+               $chatId = $env:TELEGRAM_CHATID
+
+               if (-not $token -or -not $chatId) {
+                   Write-Host "Chưa cấu hình TELEGRAM_TOKEN hoặc TELEGRAM_CHATID trong Secrets, bỏ qua gửi Telegram."
+                   exit 0
+               }
+
+               $status = "${{ job.status }}"
+               $statusEmoji = if ($status -eq "success") { "✅ PASS TOÀN BỘ" } else { "❌ CÓ TEST FAIL HOẶC LỖI BUILD" }
+               $runNumber = "${{ github.run_number }}"
+               $actor = "${{ github.actor }}"
+               $branch = "${{ github.ref_name }}"
+               $commitMsg = "${{ github.event.head_commit.message }}".Split("`n")[0]
+               $now = (Get-Date).ToString("dd/MM/yyyy HH:mm:ss")
+               $allureUrl = "https://$($env:GITHUB_REPOSITORY.Split('/')[0].ToLower()).github.io/$($env:GITHUB_REPOSITORY.Split('/')[1])"
+
+               $message = @"
+         🚀 <b>KẾT QUẢ AUTOMATION TEST CRM</b> 🚀
+
+         🔖 Lần chạy: <b>Build #$runNumber (nhánh $branch)</b>
+         👤 Người chạy: <b>$actor</b>
+         🕒 Thời gian: <b>$now</b>
+         📝 Commit: <i>$commitMsg</i>
+         ━━━━━━━━━━━━━━━━━━━
+         Trạng thái: <b>$statusEmoji</b>
+         ━━━━━━━━━━━━━━━━━━━
+         🔗 <a href="$allureUrl">Xem Allure Report trực tuyến</a>
+         "@
+
+               # 1. Gửi tin nhắn tóm tắt
+               $sendMsgUri = "https://api.telegram.org/bot$token/sendMessage"
+               $body = @{
+                   chat_id = $chatId
+                   text = $message
+                   parse_mode = "HTML"
+               } | ConvertTo-Json
+               try {
+                   Invoke-RestMethod -Uri $sendMsgUri -Method Post -Body $body -ContentType "application/json; charset=utf-8"
+                   Write-Host "Gửi tin nhắn Telegram thành công!"
+               } catch {
+                   Write-Host "Lỗi gửi tin nhắn Telegram: $_"
+               }
+
+               # 2. Gửi đính kèm file ExtentReports.html nếu tồn tại
+               $reportFile = "exports/ExtentReports/ExtentReports.html"
+               if (Test-Path $reportFile) {
+                   try {
+                       curl.exe -s -X POST "https://api.telegram.org/bot$token/sendDocument" `
+                           -F "chat_id=$chatId" `
+                           -F "document=@$reportFile" `
+                           -F "caption=📊 Báo cáo chi tiết ExtentReports"
+                       Write-Host "Gửi file ExtentReports.html lên Telegram thành công!"
+                   } catch {
+                       Write-Host "Lỗi gửi file ExtentReports: $_"
+                   }
+               }

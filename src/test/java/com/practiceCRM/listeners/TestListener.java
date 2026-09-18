@@ -24,7 +24,6 @@ import com.practiceCRM.helpers.PropertiesHelpers;
 import com.practiceCRM.helpers.ScreenRecorderHelpers;
 import com.practiceCRM.keywords.WebUI;
 import com.practiceCRM.reports.ExtentReportManager;
-import com.practiceCRM.reports.TelegramManager;
 import com.practiceCRM.utils.BrowserInfoUtils;
 import com.practiceCRM.utils.EmailSendUtils;
 import com.practiceCRM.utils.LogUtils;
@@ -131,8 +130,6 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
       // Nén thư mục report lại thành đuôi .zip
       ZipUtils.zipReportFolder();
 
-      // Gửi thông báo tóm tắt và file báo cáo qua Telegram tự động
-      TelegramManager.sendSummaryReport(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
       EmailSendUtils.sendEmail(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
 
       // Determine Browsers
