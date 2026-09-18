@@ -1,0 +1,1 @@
+Clicked on the element By.xpath: //div[contains(@class,'popover')]//li[contains(@class,'toggle-table-column') and (contains(normalize-space(),'Deadline') or contains(.,'Deadline'))]

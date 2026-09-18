@@ -1,0 +1,1 @@
+Clicked on the element By.cssSelector: .filter-multi-select > button.dropdown-toggle, .filter-multi-select > button

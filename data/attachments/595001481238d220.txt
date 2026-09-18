@@ -1,0 +1,1 @@
+Clicked on the element By.xpath: //a[contains(@href,'download_sample_excel_file') or contains(.,'Download sample')]

@@ -1,0 +1,1 @@
+Clicked on the element By.xpath: //div[contains(@class,'datepicker-custom-list')]//div[contains(@class,'list-group-item') and normalize-space()='Expired']

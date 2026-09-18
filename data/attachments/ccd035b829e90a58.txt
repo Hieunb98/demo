@@ -1,0 +1,1 @@
+Clicked on the element By.cssSelector: a[href*='partially_paid']

@@ -1,0 +1,1 @@
+Clicked on the element By.xpath: //ul[@data-act='multiselect']//li[normalize-space()='Canceled'] | //ul[contains(@class,'dropdown-menu')]//*[self::a or self::li][contains(normalize-space(),'Canceled')] | //select[@name='status_id']/option[contains(.,'Canceled')]
