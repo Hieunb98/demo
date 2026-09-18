@@ -284,15 +284,17 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
     */
    @Override
    public void onTestStart(ITestResult iTestResult) {
-      LogUtils.info("Test case: " + getTestName(iTestResult) + " is starting...");
-      count_totalTCs = count_totalTCs + 1;
+      if (!iTestResult.wasRetried()) {
+         count_totalTCs = count_totalTCs + 1;
 
-      // Tạo một block (node) trong ExtentReport cho Test Case này
-      ExtentReportManager.createTest(iTestResult.getName());
-      ExtentReportManager.addAuthors(getAuthorType(iTestResult));
-      ExtentReportManager.addCategories(getCategoryType(iTestResult));
-      ExtentReportManager.addDevices();
-      ExtentReportManager.info(BrowserInfoUtils.getOSInfo());
+         // Tạo một block (node) trong ExtentReport cho Test Case này
+         ExtentReportManager.createTest(iTestResult.getName());
+         ExtentReportManager.addAuthors(getAuthorType(iTestResult));
+         ExtentReportManager.addCategories(getCategoryType(iTestResult));
+         ExtentReportManager.addDevices();
+         ExtentReportManager.info(BrowserInfoUtils.getOSInfo());
+      }
+      LogUtils.info("Test case: " + getTestName(iTestResult) + " is starting" + (iTestResult.wasRetried() ? " (Retry)..." : "..."));
 
       // Kích hoạt quay video nếu cấu hình = yes
       if (VIDEO_RECORD.toLowerCase().trim().equals(YES)) {
@@ -350,6 +352,10 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
 
    @Override
    public void onTestSkipped(ITestResult iTestResult) {
+      if (iTestResult.wasRetried()) {
+         LogUtils.warn("Test case " + getTestName(iTestResult) + " failed and is marked for Retry. Skipping count as real skip.");
+         return;
+      }
       LogUtils.warn("WARNING!! Test case: " + getTestName(iTestResult) + " is skipped.");
       count_skippedTCs = count_skippedTCs + 1;
 

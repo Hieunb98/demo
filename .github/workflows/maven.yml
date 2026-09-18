@@ -47,10 +47,9 @@ jobs:
       runs-on: windows-latest
 
       steps:
-         # 1. Tải source code về runner (bao gồm submodule và toàn bộ lịch sử commit)
+         # 1. Tải source code về runner (toàn bộ lịch sử commit)
          -  uses: actions/checkout@v4
             with:
-               submodules: recursive
                fetch-depth: 0
 
          # 2. Cài JDK 17 (Amazon Corretto) và cache Maven dependencies
@@ -187,29 +186,18 @@ jobs:
                publish_branch: gh-pages
                publish_dir: target/site/allure-maven-plugin
 
-         # 12. Generate JavaDoc từ source code
-         -  name: Generate JavaDocs
-            if: always()
-            run: mvn javadoc:javadoc
-
-         # 13. Deploy JavaDoc lên GitHub Pages (thư mục /docs, giữ nguyên file cũ)
-         -  name: Deploy JavaDoc to GitHub Pages
-            if: always()
-            uses: peaceiris/actions-gh-pages@v4
-            with:
-               github_token: ${{ secrets.GITHUB_TOKEN }}
-               publish_branch: gh-pages
-               publish_dir: docs
-               destination_dir: docs
-               keep_files: true
-
-         # 14. Gửi báo cáo tổng kết duy nhất 1 lần qua Telegram Bot
+         # 12. Gửi báo cáo tổng kết duy nhất 1 lần qua Telegram Bot
          -  name: Send Telegram Notification
             if: always()
             shell: pwsh
             env:
                TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
                TELEGRAM_CHATID: ${{ secrets.TELEGRAM_CHATID }}
+               JOB_STATUS: ${{ job.status }}
+               RUN_NUMBER: ${{ github.run_number }}
+               ACTOR: ${{ github.actor }}
+               BRANCH: ${{ github.ref_name }}
+               COMMIT_MSG: ${{ github.event.head_commit.message }}
             run: |
                $token = $env:TELEGRAM_TOKEN
                $chatId = $env:TELEGRAM_CHATID
@@ -249,14 +237,16 @@ jobs:
                    }
                }
 
-               $jobStatus = "${{ job.status }}"
+               $jobStatus = $env:JOB_STATUS
                $statusEmoji = if ($failed -eq 0 -and $total -gt 0 -and $jobStatus -eq "success") { "✅ PASS TOÀN BỘ" } else { "❌ CÓ TEST FAIL" }
-               $runNumber = "${{ github.run_number }}"
-               $actor = "${{ github.actor }}"
-               $branch = "${{ github.ref_name }}"
-               $commitMsg = "${{ github.event.head_commit.message }}".Split("`n")[0]
-               $now = (Get-Date).ToUniversalTime().AddHours(7).ToString("dd/MM/yyyy HH:mm:ss")
-               $allureUrl = "https://$($env:GITHUB_REPOSITORY.Split('/')[0].ToLower()).github.io/$($env:GITHUB_REPOSITORY.Split('/')[1])"
+               $runNumber = $env:RUN_NUMBER
+               $actor = $env:ACTOR
+               $branch = $env:BRANCH
+               $commitMsg = if ($env:COMMIT_MSG) { $env:COMMIT_MSG.Split("`n")[0] } else { "Automation Run" }
+               $now = [DateTime]::UtcNow.AddHours(7).ToString('dd/MM/yyyy HH:mm:ss')
+               $repoOwner = $env:GITHUB_REPOSITORY.Split('/')[0].ToLower()
+               $repoName = $env:GITHUB_REPOSITORY.Split('/')[1]
+               $allureUrl = "https://${repoOwner}.github.io/${repoName}"
 
                $lines = @(
                    "🚀 <b>KẾT QUẢ AUTOMATION TEST CRM</b> 🚀",

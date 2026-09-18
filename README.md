@@ -2,7 +2,7 @@
 [![License](<https://img.shields.io/badge/License-Apache%202.0-blue.svg>)](https://opensource.org/licenses/Apache-2.0)
 [![Java CI with Maven on Windows](https://github.com/anhtester/AutomationFrameworkSelenium/actions/workflows/maven.yml/badge.svg)](https://github.com/anhtester/AutomationFrameworkSelenium/actions/workflows/maven.yml)
 
-## Test Automation Framework using Selenium Java and TestNG 
+## Test Automation Framework using Selenium Java and TestNG
 
 ### **💥Important**: when clone this repo, you should select '**Recursive**' to get all submodules
 
