@@ -1,1 +1,10 @@
-[{"buildName":"CRM-Automation-Framework","name":"Maven","type":"maven"}]
+{
+  "buildUrl": "https://github.com/Hieunb98/demo/actions/runs/35295925170",
+  "name": "GitHub Actions",
+  "buildName": "Run #16 (Hieunb98)",
+  "type": "github",
+  "buildOrder": 16,
+  "reportName": "Allure Report | CRM-Automation-Framework",
+  "url": "https://github.com/Hieunb98/demo",
+  "reportUrl": "https://hieunb98.github.io/demo"
+}

@@ -1,0 +1,1 @@
+Clicked on the element By.xpath: //table[@id='project-table']//tbody//tr[.//a[contains(normalize-space(),'Auto_Open_NoLabel_1789695570774')]]//a[@title='Delete project' or contains(@class,'delete')]
