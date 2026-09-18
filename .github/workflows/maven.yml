@@ -105,15 +105,38 @@ jobs:
             if: always()
             shell: pwsh
             run: |
-               if (Test-Path "target/allure-results/executor.json") {
-                   $json = (Get-Content "target/allure-results/executor.json" -Raw).Trim()
-                   $dest = "target/site/allure-maven-plugin/widgets/executors.json"
-                   New-Item -ItemType Directory -Force -Path "target/site/allure-maven-plugin/widgets" | Out-Null
-                   "[$json]" | Set-Content $dest -Encoding UTF8
-                   Write-Host "Overwritten $dest successfully as JSON Array!"
-               } else {
-                   Write-Host "File target/allure-results/executor.json NOT found!"
-               }
+               $serverUrl = if ($env:GITHUB_SERVER_URL) { $env:GITHUB_SERVER_URL } else { "https://github.com" }
+               $repo = $env:GITHUB_REPOSITORY
+               $runId = $env:GITHUB_RUN_ID
+               $runNumber = $env:GITHUB_RUN_NUMBER
+               $actor = $env:GITHUB_ACTOR
+
+               $repoUrl = "$serverUrl/$repo"
+               $buildUrl = if ($runId) { "$repoUrl/actions/runs/$runId" } else { "$repoUrl/actions" }
+               $reportUrl = "https://$($repo.Split('/')[0].ToLower()).github.io/$($repo.Split('/')[1])"
+
+               $executorData = @(
+                   @{
+                       name = "GitHub Actions"
+                       type = "github"
+                       url = $repoUrl
+                       buildOrder = [int]$runNumber
+                       buildName = "Run #$runNumber ($actor)"
+                       buildUrl = $buildUrl
+                       reportUrl = $reportUrl
+                       reportName = "Allure Report | CRM-Automation-Framework"
+                   }
+               )
+
+               $jsonArray = $executorData | ConvertTo-Json -Depth 5
+
+               $destWidget = "target/site/allure-maven-plugin/widgets/executors.json"
+               New-Item -ItemType Directory -Force -Path "target/site/allure-maven-plugin/widgets" | Out-Null
+               $jsonArray | Set-Content $destWidget -Encoding UTF8
+               Write-Host "Overwritten $destWidget with GitHub Actions executor!"
+
+               $destResults = "target/allure-results/executor.json"
+               $executorData[0] | ConvertTo-Json -Depth 5 | Set-Content $destResults -Encoding UTF8
 
          # 7. Upload Extent Report lên Artifacts (HTML và PDF)
          -  name: Upload Extent Report
@@ -190,8 +213,38 @@ jobs:
                    exit 0
                }
 
-               $status = "${{ job.status }}"
-               $statusEmoji = if ($status -eq "success") { "✅ PASS TOÀN BỘ" } else { "❌ CÓ TEST FAIL HOẶC LỖI BUILD" }
+               $total = 0
+               $passed = 0
+               $failed = 0
+               $skipped = 0
+
+               $summaryFile = "target/site/allure-maven-plugin/widgets/summary.json"
+               $testngFile = "target/surefire-reports/testng-results.xml"
+
+               if (Test-Path $summaryFile) {
+                   try {
+                       $summary = Get-Content $summaryFile -Raw -Encoding UTF8 | ConvertFrom-Json
+                       $total = [int]$summary.statistic.total
+                       $passed = [int]$summary.statistic.passed
+                       $failed = [int]$summary.statistic.failed + [int]$summary.statistic.broken
+                       $skipped = [int]$summary.statistic.skipped
+                   } catch {
+                       Write-Host "Lỗi đọc summary.json: $_"
+                   }
+               } elseif (Test-Path $testngFile) {
+                   try {
+                       [xml]$xml = Get-Content $testngFile
+                       $total = [int]$xml."testng-results".total
+                       $passed = [int]$xml."testng-results".passed
+                       $failed = [int]$xml."testng-results".failed
+                       $skipped = [int]$xml."testng-results".skipped
+                   } catch {
+                       Write-Host "Lỗi đọc testng-results.xml: $_"
+                   }
+               }
+
+               $jobStatus = "${{ job.status }}"
+               $statusEmoji = if ($failed -eq 0 -and $total -gt 0 -and $jobStatus -eq "success") { "✅ PASS TOÀN BỘ" } else { "❌ CÓ TEST FAIL" }
                $runNumber = "${{ github.run_number }}"
                $actor = "${{ github.actor }}"
                $branch = "${{ github.ref_name }}"
@@ -201,13 +254,17 @@ jobs:
 
                $lines = @(
                    "🚀 <b>KẾT QUẢ AUTOMATION TEST CRM</b> 🚀",
-                   "",
+                   "Trạng thái: <b>$statusEmoji</b>",
+                   "━━━━━━━━━━━━━━━━━━━",
                    "🔖 Lần chạy: <b>Build #$runNumber (nhánh $branch)</b>",
                    "👤 Người chạy: <b>$actor</b>",
                    "🕒 Thời gian: <b>$now</b>",
                    "📝 Commit: <i>$commitMsg</i>",
                    "━━━━━━━━━━━━━━━━━━━",
-                   "Trạng thái: <b>$statusEmoji</b>",
+                   "📊 Tổng số test cases: <b>$total</b>",
+                   "✅ Passed: <b>$passed</b>",
+                   "❌ Failed: <b>$failed</b>",
+                   "⚠️ Skipped: <b>$skipped</b>",
                    "━━━━━━━━━━━━━━━━━━━",
                    "🔗 <a href=`"$allureUrl`">Xem Allure Report trực tuyến</a>"
                )
