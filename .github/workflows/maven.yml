@@ -128,15 +128,21 @@ jobs:
                    }
                )
 
-               $jsonArray = $executorData | ConvertTo-Json -Depth 5
+               $singleJson = ($executorData | ConvertTo-Json -Depth 5).Trim()
+               $jsonArray = "[$singleJson]"
 
                $destWidget = "target/site/allure-maven-plugin/widgets/executors.json"
                New-Item -ItemType Directory -Force -Path "target/site/allure-maven-plugin/widgets" | Out-Null
                $jsonArray | Set-Content $destWidget -Encoding UTF8
-               Write-Host "Overwritten $destWidget with GitHub Actions executor!"
+               Write-Host "Overwritten $destWidget with GitHub Actions executor array!"
+
+               # Ghi thêm vào data/
+               $destData = "target/site/allure-maven-plugin/data/executors.json"
+               New-Item -ItemType Directory -Force -Path "target/site/allure-maven-plugin/data" | Out-Null
+               $jsonArray | Set-Content $destData -Encoding UTF8
 
                $destResults = "target/allure-results/executor.json"
-               $executorData[0] | ConvertTo-Json -Depth 5 | Set-Content $destResults -Encoding UTF8
+               $singleJson | Set-Content $destResults -Encoding UTF8
 
          # 7. Upload Extent Report lên Artifacts (HTML và PDF)
          -  name: Upload Extent Report
@@ -249,7 +255,7 @@ jobs:
                $actor = "${{ github.actor }}"
                $branch = "${{ github.ref_name }}"
                $commitMsg = "${{ github.event.head_commit.message }}".Split("`n")[0]
-               $now = (Get-Date).ToString("dd/MM/yyyy HH:mm:ss")
+               $now = (Get-Date).ToUniversalTime().AddHours(7).ToString("dd/MM/yyyy HH:mm:ss")
                $allureUrl = "https://$($env:GITHUB_REPOSITORY.Split('/')[0].ToLower()).github.io/$($env:GITHUB_REPOSITORY.Split('/')[1])"
 
                $lines = @(
