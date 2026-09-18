@@ -1,1 +1,0 @@
-Set text Temp_NoColor_1789686065056 on By.cssSelector: #s2id_project_labels input, #project_labels

@@ -1,0 +1,1 @@
+Click on element with JS: [[ChromeDriver: chrome on windows (a81e2ce196428df5bb992b10a396b555)] -> css selector: ul[data-act='multiselect'] li.active, .filter-multi-select li.active]
