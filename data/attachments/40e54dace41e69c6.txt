@@ -1,1 +1,0 @@
-Click on element with JS: By.cssSelector: #labels-form button[type='submit']

@@ -1,1 +1,0 @@
-Click on element with JS: By.cssSelector: #s2id_project_labels input, #project_labels

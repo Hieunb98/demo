@@ -1,1 +1,0 @@
-Verify Contains: https://rise.anhtester.com/invoices/index/custom/not_paid/USDCONTAINSnot_paid

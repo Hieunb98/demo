@@ -1,1 +1,0 @@
-Clicked on the element By.xpath: //ul[@id='sidebar-menu']//a[contains(@href,'/team_members') and normalize-space()='Team']

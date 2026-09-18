@@ -1,1 +1,0 @@
-Set text AI_automation on By.cssSelector: #labels-form #title, #labels-form input[name='title']
