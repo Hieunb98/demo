@@ -199,18 +199,19 @@ jobs:
                $now = (Get-Date).ToString("dd/MM/yyyy HH:mm:ss")
                $allureUrl = "https://$($env:GITHUB_REPOSITORY.Split('/')[0].ToLower()).github.io/$($env:GITHUB_REPOSITORY.Split('/')[1])"
 
-               $message = @"
-         🚀 <b>KẾT QUẢ AUTOMATION TEST CRM</b> 🚀
-
-         🔖 Lần chạy: <b>Build #$runNumber (nhánh $branch)</b>
-         👤 Người chạy: <b>$actor</b>
-         🕒 Thời gian: <b>$now</b>
-         📝 Commit: <i>$commitMsg</i>
-         ━━━━━━━━━━━━━━━━━━━
-         Trạng thái: <b>$statusEmoji</b>
-         ━━━━━━━━━━━━━━━━━━━
-         🔗 <a href="$allureUrl">Xem Allure Report trực tuyến</a>
-         "@
+               $lines = @(
+                   "🚀 <b>KẾT QUẢ AUTOMATION TEST CRM</b> 🚀",
+                   "",
+                   "🔖 Lần chạy: <b>Build #$runNumber (nhánh $branch)</b>",
+                   "👤 Người chạy: <b>$actor</b>",
+                   "🕒 Thời gian: <b>$now</b>",
+                   "📝 Commit: <i>$commitMsg</i>",
+                   "━━━━━━━━━━━━━━━━━━━",
+                   "Trạng thái: <b>$statusEmoji</b>",
+                   "━━━━━━━━━━━━━━━━━━━",
+                   "🔗 <a href=`"$allureUrl`">Xem Allure Report trực tuyến</a>"
+               )
+               $message = $lines -join "`n"
 
                # 1. Gửi tin nhắn tóm tắt
                $sendMsgUri = "https://api.telegram.org/bot$token/sendMessage"
@@ -230,10 +231,7 @@ jobs:
                $reportFile = "exports/ExtentReports/ExtentReports.html"
                if (Test-Path $reportFile) {
                    try {
-                       curl.exe -s -X POST "https://api.telegram.org/bot$token/sendDocument" `
-                           -F "chat_id=$chatId" `
-                           -F "document=@$reportFile" `
-                           -F "caption=📊 Báo cáo chi tiết ExtentReports"
+                       curl.exe -s -X POST "https://api.telegram.org/bot$token/sendDocument" -F "chat_id=$chatId" -F "document=@$reportFile" -F "caption=📊 Báo cáo chi tiết ExtentReports"
                        Write-Host "Gửi file ExtentReports.html lên Telegram thành công!"
                    } catch {
                        Write-Host "Lỗi gửi file ExtentReports: $_"
