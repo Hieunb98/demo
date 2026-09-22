@@ -1,1 +1,0 @@
-Click on element with JS: By.cssSelector: #project-table tbody tr:first-child td:nth-child(2) a

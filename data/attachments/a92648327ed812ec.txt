@@ -1,1 +1,0 @@
-Clicked on the element By.xpath: //*[contains(@class,'custom-date-range-dropdown')]//a[contains(@class,'dropdown-item') and normalize-space()='Next Month']

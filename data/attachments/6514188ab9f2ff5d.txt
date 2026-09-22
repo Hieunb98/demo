@@ -1,1 +1,0 @@
-Clicked on the element By.cssSelector: .custom-date-range-dropdown .dropdown-toggle

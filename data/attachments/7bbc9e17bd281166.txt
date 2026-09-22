@@ -1,1 +1,0 @@
-Clicked on the element By.cssSelector: #uploaded-file-previews [data-dz-remove], #uploaded-file-previews a[data-dz-remove], #uploaded-file-previews .dz-remove

@@ -1,2 +1,0 @@
-==> The Text is: Project type field is required.
-This field is required.

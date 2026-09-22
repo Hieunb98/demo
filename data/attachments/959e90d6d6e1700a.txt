@@ -1,1 +1,0 @@
-Clicked on the element By.id: personal-language-icon

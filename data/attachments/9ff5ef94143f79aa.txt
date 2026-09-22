@@ -1,1 +1,0 @@
-Clicked on the element By.cssSelector: #sidebar-menu a[href*='/clients']
