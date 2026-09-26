@@ -31,6 +31,15 @@ on:
             required: false
             default: true
             type: boolean
+         Os:
+            description: 'Chọn OS'
+            required: false
+            default: 'windows-latest'
+            type: choice
+            options:
+               - ubuntu-latest
+               - windows-latest
+               - macos-latest
    push:
       branches: [ "main" ]         # Trigger khi push lên main
    pull_request:
