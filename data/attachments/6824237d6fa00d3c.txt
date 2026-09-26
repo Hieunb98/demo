@@ -1,0 +1,1 @@
+Clicked on the element By.xpath: //a[contains(@href,'/events')][contains(.,'Events today')]

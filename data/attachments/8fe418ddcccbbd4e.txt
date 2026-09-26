@@ -1,0 +1,1 @@
+Set text Auto_Import_Trim_Space_Project on By.cssSelector: #project-table_filter input

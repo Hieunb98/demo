@@ -1,0 +1,1 @@
+Click on element with JS: By.cssSelector: #project-table tbody tr:first-child a[title='Edit project'], #project-table tbody tr:first-child a.edit

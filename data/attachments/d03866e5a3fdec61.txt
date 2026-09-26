@@ -1,0 +1,1 @@
+Click on element with JS: By.cssSelector: #ajaxModal .modal-footer button[data-bs-dismiss='modal'], #ajaxModal .modal-footer button[data-dismiss='modal']

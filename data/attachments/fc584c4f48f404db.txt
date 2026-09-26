@@ -1,0 +1,1 @@
+Set text AI_automation on By.cssSelector: #s2id_project_labels input, #project_labels

@@ -1,0 +1,1 @@
+Verify Contains: https://rise.anhtester.com/invoices/index/custom/fully_paid/USDCONTAINSfully_paid

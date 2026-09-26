@@ -1,0 +1,1 @@
+Click on element with JS: By.cssSelector: select[name='project_label'] ~ .select2-container .select2-choice, .filter-item-box .select2-choice
