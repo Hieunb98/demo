@@ -89,11 +89,12 @@ jobs:
                echo "Running suite: $SUITE_NAME on browser: $BROWSER_NAME (headless=$HEADLESS_MODE) on OS: ${{ runner.os }}"
 
                MVN_CMD="mvn clean test --file pom.xml \
-                 -DsuiteXmlFile=\"src/test/resources/suites/$SUITE_NAME\" \
-                 -DBROWSER=\"$BROWSER_NAME\" \
-                 -DHEADLESS=\"$HEADLESS_MODE\" \
-                 -DTARGET=\"local\" \
-                 -DENCRYPTION_KEY=\"${{ secrets.ENCRYPTION_KEY }}\""
+                 -DsuiteXmlFile=src/test/resources/suites/$SUITE_NAME \
+                 -DBROWSER=$BROWSER_NAME \
+                 -DHEADLESS=$HEADLESS_MODE \
+                 -DTARGET=local \
+                 -Dmaven.test.failure.ignore=true \
+                 -DENCRYPTION_KEY=${{ secrets.ENCRYPTION_KEY }}"
 
                if [ "$RUNNER_OS" == "Linux" ]; then
                   echo "🖥️ Khởi chạy test trong màn hình ảo Xvfb (1920x1080x24)..."

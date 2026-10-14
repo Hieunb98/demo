@@ -65,7 +65,7 @@ pipeline {
                         -DsuiteXmlFile="${env.SUITE_PATH}" \
                         -DBROWSER="${params.BROWSER}" \
                         -DHEADLESS="${params.HEADLESS}" \
-                        -DTARGET=\"local\" \
+                        -DTARGET=remote \
                         -Dmaven.test.failure.ignore=true
                 """
             }
