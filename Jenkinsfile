@@ -4,7 +4,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3.9-eclipse-temurin-17'
-            args '-v $HOME/.m2:/root/.m2' // Mount cache Maven để các lần sau chạy nhanh hơn
+            args '-v $HOME/.m2:/root/.m2 --network docker_default' // Nối vào mạng của Selenium Grid
         }
     }
 
@@ -66,6 +66,7 @@ pipeline {
                         -DBROWSER="${params.BROWSER}" \
                         -DHEADLESS="${params.HEADLESS}" \
                         -DTARGET=remote \
+                        -DREMOTE_URL=selenium-hub \
                         -Dmaven.test.failure.ignore=true
                 """
             }

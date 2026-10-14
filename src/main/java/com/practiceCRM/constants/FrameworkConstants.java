@@ -55,7 +55,9 @@ public final class FrameworkConstants {
         public static final String URL_CRM = CONFIG.URL_CRM();
         public static final String URL_CMS_ADMIN = CONFIG.URL_CMS_ADMIN();
         public static final String URL_CMS_USER = CONFIG.URL_CMS_USER();
-        public static final String REMOTE_URL = CONFIG.REMOTE_URL();
+        public static final String REMOTE_URL = (System.getProperty("REMOTE_URL") != null && !System.getProperty("REMOTE_URL").trim().isEmpty())
+                ? System.getProperty("REMOTE_URL").trim()
+                : CONFIG.REMOTE_URL();
         public static final String REMOTE_PORT = CONFIG.REMOTE_PORT();
 
         // ===== CẤU HÌNH REPORT & NOTIFICATION =====
