@@ -1,1 +1,0 @@
-Clicked on the element By.id: web-notification-icon

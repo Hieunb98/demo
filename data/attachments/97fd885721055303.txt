@@ -1,1 +1,0 @@
-Click on element with JS: By.cssSelector: #ajaxModal .modal-header button.close, #ajaxModal .modal-header button.btn-close

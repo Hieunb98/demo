@@ -1,1 +1,0 @@
-Clicked on the element By.xpath: //div[@id='select2-drop']//div[contains(@class,'select2-result-label') and normalize-space()='Doing']

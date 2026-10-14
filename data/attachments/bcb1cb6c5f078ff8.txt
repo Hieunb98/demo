@@ -1,1 +1,0 @@
-Clicked on the element By.cssSelector: #project-table_next a

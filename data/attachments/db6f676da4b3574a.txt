@@ -1,1 +1,0 @@
-Click on element with JS: By.cssSelector: .filter-multi-select > button.dropdown-toggle, .filter-multi-select > button

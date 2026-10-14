@@ -1,1 +1,0 @@
-Click on element with JS: By.cssSelector: #ajaxModal button[type='submit']

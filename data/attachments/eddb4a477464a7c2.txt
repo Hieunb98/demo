@@ -1,1 +1,0 @@
-Clicked on the element By.xpath: //div[@id='ajaxModal']//select[@name='status_id']/parent::*//a[contains(@class,'select2-choice')] | //div[@id='s2id_status']//a[contains(@class,'select2-choice')]

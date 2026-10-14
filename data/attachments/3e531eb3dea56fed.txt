@@ -1,1 +1,0 @@
-Set text Auto_ on By.cssSelector: #project-table_filter input
