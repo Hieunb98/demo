@@ -1,11 +1,9 @@
 pipeline {
-    // SỬ DỤNG DOCKER AGENT: Môi trường đóng gói sẵn Maven 3.9 + Java 17 LTS (Eclipse Temurin)
-    // Tự động kéo image về, tạo container chạy test và tự huỷ sau khi xong (Ephemeral Agent)
-    agent {
-        docker {
-            image 'maven:3.9-eclipse-temurin-17'
-            args '-v $HOME/.m2:/root/.m2' // Mount cache Maven để các lần sau chạy nhanh hơn
-        }
+    // CHẠY TRỰC TIẾP TRÊN JENKINS MASTER VÀ NẠP TỰ ĐỘNG MAVEN 3.9
+    agent any
+
+    tools {
+        maven 'Maven 3.9' // Khớp với tên đã cài trong Manage Jenkins > Tools
     }
 
     // CẤU HÌNH DỌN DẸP LỊCH SỬ BUILD (Pipeline as Code)
