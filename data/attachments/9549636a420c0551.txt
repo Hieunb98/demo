@@ -1,0 +1,1 @@
+Click Partially paid không điều hướng đúng. | actual=[https://rise.anhtester.com/invoices/index/custom/partially_paid/USD] expected to contain=[partially_paid] → true

@@ -1,0 +1,1 @@
+TC_037: URL Dashboard sai sau khi đăng nhập. | actual=[https://rise.anhtester.com/dashboard/index/1] expected to contain=[/dashboard] → true

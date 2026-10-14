@@ -1,0 +1,1 @@
+TC_014: Click My open tasks không điều hướng đến /tasks/all_tasks | actual=[https://rise.anhtester.com/tasks/all_tasks#my_open_tasks] expected to contain=[/tasks/all_tasks] → true

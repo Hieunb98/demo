@@ -1,0 +1,1 @@
+TC_026: Click Draft không điều hướng đúng. | actual=[https://rise.anhtester.com/invoices/index/custom/draft/USD] expected to contain=[draft] → true

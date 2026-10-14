@@ -1,0 +1,1 @@
+TC_012: Text trạng thái Clock In không đúng: Clock started at : 13:05 | actual=[Clock started at : 13:05] expected to contain=[Clock started at] → true

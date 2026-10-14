@@ -1,0 +1,1 @@
+Click Fully paid không điều hướng đúng. | actual=[https://rise.anhtester.com/invoices/index/custom/fully_paid/USD] expected to contain=[fully_paid] → true

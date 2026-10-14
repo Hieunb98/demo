@@ -1,0 +1,1 @@
+TC_016: Click Events today không điều hướng đến /events | actual=[https://rise.anhtester.com/events] expected to contain=[/events] → true

@@ -1,0 +1,1 @@
+TC_018: Click Due không điều hướng đến /invoices | actual=[https://rise.anhtester.com/invoices/index] expected to contain=[/invoices] → true

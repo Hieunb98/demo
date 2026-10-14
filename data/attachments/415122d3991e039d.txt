@@ -1,0 +1,1 @@
+Điều hướng đến Events thất bại. | actual=[https://rise.anhtester.com/events] expected to contain=[/events] → true

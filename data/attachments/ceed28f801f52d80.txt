@@ -1,0 +1,1 @@
+Điều hướng đến Candidates thất bại. | actual=[https://rise.anhtester.com/recruitment_candidates/index] expected to contain=[/recruitment_candidates/index] → true

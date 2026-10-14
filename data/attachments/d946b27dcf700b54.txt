@@ -1,0 +1,1 @@
+Click Ticket New không điều hướng đúng. | actual=[https://rise.anhtester.com/tickets/index/new] expected to contain=[/tickets/index/new] → true

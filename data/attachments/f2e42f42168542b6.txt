@@ -1,0 +1,1 @@
+Điều hướng đến Tickets thất bại. | actual=[https://rise.anhtester.com/tickets] expected to contain=[/tickets] → true
