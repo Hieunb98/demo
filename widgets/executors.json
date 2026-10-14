@@ -1,10 +1,10 @@
 [{
-  "type": "github",
-  "buildOrder": 33,
-  "buildUrl": "https://github.com/Hieunb98/demo/actions/runs/38609411062",
-  "name": "GitHub Actions",
+  "buildUrl": "https://github.com/Hieunb98/demo/actions/runs/38609896688",
   "url": "https://github.com/Hieunb98/demo",
+  "buildOrder": 34,
+  "reportUrl": "https://hieunb98.github.io/demo",
+  "buildName": "Run #34 (Hieunb98)",
   "reportName": "Allure Report | CRM-Automation-Framework",
-  "buildName": "Run #33 (Hieunb98)",
-  "reportUrl": "https://hieunb98.github.io/demo"
+  "name": "GitHub Actions",
+  "type": "github"
 }]
