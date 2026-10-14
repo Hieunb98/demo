@@ -112,7 +112,7 @@ pipeline {
                 try {
                     withCredentials([
                         string(credentialsId: 'telegram-bot-token', variable: 'TELEGRAM_TOKEN'),
-                        string(credentialsId: 'telegram-chat-id', variable: 'TELEGRAM_CHATID')
+                        string(credentialsId: 'telegram-bot-id', variable: 'TELEGRAM_CHATID')
                     ]) {
                         sh '''
                             BUILD_STATUS="${currentBuild.currentResult}"
