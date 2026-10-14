@@ -38,11 +38,6 @@ pipeline {
             defaultValue: true,
             description: 'Chạy ngầm không mở giao diện (Headless mode)'
         )
-        choice(
-            name: 'TARGET',
-            choices: ['remote', 'local'],
-            description: 'Môi trường thực thi (remote: Selenium Grid Docker / local: máy host)'
-        )
     }
 
     environment {
@@ -70,7 +65,7 @@ pipeline {
                         -DsuiteXmlFile="${env.SUITE_PATH}" \
                         -DBROWSER="${params.BROWSER}" \
                         -DHEADLESS="${params.HEADLESS}" \
-                        -DTARGET="${params.TARGET}" \
+                        -DTARGET=\"local\" \
                         -Dmaven.test.failure.ignore=true
                 """
             }

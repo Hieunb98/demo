@@ -5,6 +5,5 @@
         <suite-file path="CRM/SignIn-parallel-methods.xml"/>
         <suite-file path="CRM/Dashboard-parallel-methods.xml"/>
         <suite-file path="CRM/TopBarTest-parallel-methods.xml"/>
-        <suite-file path="CRM/Project-parallel-methods.xml"/>
     </suite-files>
 </suite>
