@@ -31,6 +31,15 @@ on:
             required: false
             default: true
             type: boolean
+         Os:
+            description: 'Chọn OS'
+            required: false
+            default: 'ubuntu-latest'
+            type: choice
+            options:
+               - ubuntu-latest
+               - windows-latest
+               - macos-latest
    push:
       branches: [ "main" ]         # Trigger khi push lên main
    pull_request:
@@ -41,10 +50,10 @@ on:
 jobs:
    build:
       # Các lựa chọn hệ điều hành Runner trên GitHub Actions:
-      # - ubuntu-latest  : Linux (Khuyên dùng: Khởi động nhanh nhất, ít lỗi mạng, tiết kiệm quota phút chạy)
+      # - ubuntu-latest  : Linux (Khuyên dùng: Khởi động nhanh nhất, ít lỗi mạng, tiết kiệm quota phút chạy, hỗ trợ Xvfb)
       # - windows-latest : Windows Server (Dùng khi test case yêu cầu môi trường Windows)
       # - macos-latest   : macOS (Dùng cho test Safari/iOS/Mac, tốn x10 quota phút chạy)
-      runs-on: windows-latest
+      runs-on: ${{ github.event.inputs.Os || 'ubuntu-latest' }}
 
       steps:
          # 1. Tải source code về runner (toàn bộ lịch sử commit)
@@ -60,7 +69,14 @@ jobs:
                java-version: '17'
                cache: maven
 
-         # 3. Chạy toàn bộ test cases
+         # Cài đặt Xvfb (Virtual Display Server) trên Linux Runner
+         -  name: Install Xvfb (Virtual Display)
+            if: runner.os == 'Linux'
+            run: |
+               sudo apt-get update
+               sudo apt-get install -y xvfb
+
+         # 3. Chạy toàn bộ test cases (Hỗ trợ Xvfb 1920x1080x24 trên Linux)
          -  name: Run test with Maven
             shell: bash
             env:
@@ -70,12 +86,21 @@ jobs:
                SUITE_NAME="${{ github.event.inputs.suite || 'SuiteAll.xml' }}"
                BROWSER_NAME="${{ github.event.inputs.browser || 'chrome' }}"
                HEADLESS_MODE="${{ github.event.inputs.headless != '' && github.event.inputs.headless || 'true' }}"
-               echo "Running suite: $SUITE_NAME on browser: $BROWSER_NAME (headless=$HEADLESS_MODE)"
-               mvn clean test --file pom.xml \
-                 -DsuiteXmlFile="src/test/resources/suites/$SUITE_NAME" \
-                 -DBROWSER="$BROWSER_NAME" \
-                 -DHEADLESS="$HEADLESS_MODE" \
-                 -DENCRYPTION_KEY="${{ secrets.ENCRYPTION_KEY }}"
+               echo "Running suite: $SUITE_NAME on browser: $BROWSER_NAME (headless=$HEADLESS_MODE) on OS: ${{ runner.os }}"
+
+               MVN_CMD="mvn clean test --file pom.xml \
+                 -DsuiteXmlFile=\"src/test/resources/suites/$SUITE_NAME\" \
+                 -DBROWSER=\"$BROWSER_NAME\" \
+                 -DHEADLESS=\"$HEADLESS_MODE\" \
+                 -DTARGET=\"local\" \
+                 -DENCRYPTION_KEY=\"${{ secrets.ENCRYPTION_KEY }}\""
+
+               if [ "$RUNNER_OS" == "Linux" ]; then
+                  echo "🖥️ Khởi chạy test trong màn hình ảo Xvfb (1920x1080x24)..."
+                  xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" $MVN_CMD
+               else
+                  eval $MVN_CMD
+               fi
 
          # 4. Lấy lịch sử Allure từ gh-pages (để hiển thị trend report)
          -  name: Get Allure history

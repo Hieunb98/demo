@@ -1,6 +1,5 @@
 package com.practiceCRM.projects.crm.testcases.projects;
 
-import static com.practiceCRM.keywords.WebUI.*;
 
 import com.practiceCRM.projects.crm.pages.Projects.ProjectPageCRM;
 import com.practiceCRM.projects.crm.models.ProjectModel;

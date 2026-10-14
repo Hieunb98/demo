@@ -1,7 +1,6 @@
 package com.practiceCRM.projects.crm.testcases;
 
 import com.practiceCRM.common.BaseTest;
-import static com.practiceCRM.keywords.WebUI.*;
 import com.practiceCRM.projects.crm.pages.CommonPageCRM;
 
 import io.qameta.allure.Epic;

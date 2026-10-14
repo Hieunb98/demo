@@ -12,10 +12,9 @@ import org.testng.annotations.Parameters;
 import com.practiceCRM.constants.FrameworkConstants;
 import com.practiceCRM.driver.DriverManager;
 import com.practiceCRM.driver.TargetFactory;
-import com.practiceCRM.helpers.PropertiesHelpers;
-import com.practiceCRM.keywords.WebUI;
+import com.practiceCRM.config.ConfigFactory;
+import com.practiceCRM.base.BasePage;
 import com.practiceCRM.listeners.TestListener;
-import com.practiceCRM.projects.crm.models.LogInModel;
 import com.practiceCRM.projects.crm.pages.CommonPageCRM;
 import com.practiceCRM.reports.AllureManager;
 import com.practiceCRM.utils.LogUtils;
@@ -31,7 +30,7 @@ import org.testng.ITestResult;
 public class BaseTest extends CommonPageCRM {
    @org.testng.annotations.BeforeSuite
    public void beforeSuite() {
-      PropertiesHelpers.loadAllFiles();
+      ConfigFactory.getConfigs();
    }
 
    /**
@@ -42,10 +41,12 @@ public class BaseTest extends CommonPageCRM {
    @Parameters("BROWSER")
    @BeforeMethod(alwaysRun = true)
    public void createDriver(@Optional("chrome") String browser) {
-      // Đảm bảo dọn dẹp sạch sẽ SoftAssert cũ trước khi bắt đầu test mới trên thread này
-      WebUI.clearSoftAssert();
+      // Đảm bảo dọn dẹp sạch sẽ SoftAssert cũ trước khi bắt đầu test mới trên thread
+      // này
+      BasePage.clearSoftAssert();
 
-      // Khởi tạo WebDriver thông qua TargetFactory và bảo vệ nó khỏi xung đột luồng bằng ThreadGuard
+      // Khởi tạo WebDriver thông qua TargetFactory và bảo vệ nó khỏi xung đột luồng
+      // bằng ThreadGuard
       WebDriver driver = ThreadGuard.protect(new TargetFactory().createInstance(browser));
 
       // Cài đặt kích thước cửa sổ dựa vào chế độ chạy
@@ -61,14 +62,15 @@ public class BaseTest extends CommonPageCRM {
    }
 
    /**
-    * Hàm này chạy SAU mỗi phương thức @Test (dù test PASS hay FAIL nhờ alwaysRun = true).
+    * Hàm này chạy SAU mỗi phương thức @Test (dù test PASS hay FAIL nhờ alwaysRun =
+    * true).
     * Mục đích: Dọn dẹp, giải phóng bộ nhớ và kiểm tra SoftAssert an toàn.
     */
    @AfterMethod(alwaysRun = true)
    public void closeDriver(ITestResult result) {
       try {
          // Kiểm tra nếu có lệnh SoftAssert nào bị fail trước đó
-         WebUI.stopSoftAssertAll();
+         BasePage.stopSoftAssertAll();
       } catch (AssertionError ae) {
          LogUtils.error("🚨 Phát hiện Soft Assert thất bại trong test case: " + ae.getMessage());
          if (result != null) {
@@ -77,7 +79,7 @@ public class BaseTest extends CommonPageCRM {
          }
       } finally {
          // Xóa sạch SoftAssert trên thread này và tắt trình duyệt an toàn
-         WebUI.clearSoftAssert();
+         BasePage.clearSoftAssert();
          DriverManager.quit();
       }
    }
@@ -87,7 +89,6 @@ public class BaseTest extends CommonPageCRM {
     * luồng TestNG).
     */
    public WebDriver createBrowser(@Optional("chrome") String browser) {
-      PropertiesHelpers.loadAllFiles();
       WebDriver driver = ThreadGuard.protect(new TargetFactory().createInstance(browser));
       if (Boolean.valueOf(FrameworkConstants.HEADLESS) == true) {
          driver.manage().window().setSize(new Dimension(1920, 1080)); // ép Selenium resize

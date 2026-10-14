@@ -5,118 +5,91 @@
 
 package com.practiceCRM.constants;
 
+import com.practiceCRM.config.ConfigFactory;
+import com.practiceCRM.config.Configuration;
 import com.practiceCRM.helpers.SystemHelpers;
-import com.practiceCRM.helpers.PropertiesHelpers;
 import com.practiceCRM.utils.ReportUtils;
 
 import java.io.File;
 
 /**
- * FrameworkConstants là nơi tập trung đọc và lưu trữ toàn bộ các hằng số
- * (constants)
- * từ các file cấu hình (như config.properties, data.properties) vào bộ nhớ RAM
- * một lần duy nhất.
- * Nhờ có static block, khi hệ thống khởi động, nó sẽ nạp tất cả biến này để
- * dùng chung cho mọi file.
+ * FrameworkConstants là nơi tập trung các hằng số (constants) cho toàn bộ hệ thống.
+ * Cấu hình được nạp Type-safe thông qua thư viện Owner (Configuration & ConfigFactory).
  */
 public final class FrameworkConstants {
 
         private FrameworkConstants() {
         }
 
-        // Static block sẽ chạy ngay khi class này được gọi lần đầu tiên
-        static {
-                PropertiesHelpers.loadAllFiles();
-        }
+        private static final Configuration CONFIG = ConfigFactory.getConfigs();
 
         // ===== ĐƯỜNG DẪN FILE DỮ LIỆU =====
         public static final String PROJECT_PATH = SystemHelpers.getCurrentDir();
-        public static final String EXCEL_DATA_FILE_PATH = PropertiesHelpers.getValue("EXCEL_DATA_FILE_PATH");
-        public static final String EXCEL_CRM_LOGIN = PropertiesHelpers.getValue("EXCEL_CRM_LOGIN");
-        public static final String EXCEL_PROJECTS_IMPORT = PropertiesHelpers.getValue("EXCEL_PROJECTS_IMPORT");
-        public static final String EXCEL_PROJECTS_IMPORT_MULTI = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_MULTI");
-        public static final String EXCEL_PROJECTS_IMPORT_ALL_FIELDS = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_ALL_FIELDS");
-        public static final String EXCEL_PROJECTS_IMPORT_REQUIRED_ONLY = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_REQUIRED_ONLY");
-        public static final String EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE");
-        public static final String EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS");
-        public static final String EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS");
-        public static final String EXCEL_PROJECTS_IMPORT_INVALID_STATUS = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_INVALID_STATUS");
-        public static final String EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE");
-        public static final String EXCEL_PROJECTS_IMPORT_DUPLICATE_NAME = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_DUPLICATE_NAME");
-        public static final String EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY");
-        public static final String EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN");
-        public static final String EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS");
-        public static final String EXCEL_PROJECTS_IMPORT_EXTRA_COLUMNS = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_EXTRA_COLUMNS");
-        public static final String EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS = PropertiesHelpers
-                        .getValue("EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS");
-        public static final String FILE_PROJECTS_INVALID_IMAGE = PropertiesHelpers
-                        .getValue("FILE_PROJECTS_INVALID_IMAGE");
-        public static final String FILE_PROJECTS_INVALID_PPTX = PropertiesHelpers
-                        .getValue("FILE_PROJECTS_INVALID_PPTX");
-        public static final String FILE_PROJECTS_INVALID_DOCX = PropertiesHelpers
-                        .getValue("FILE_PROJECTS_INVALID_DOCX");
-        public static final String FILE_PROJECTS_INVALID_CSV = PropertiesHelpers.getValue("FILE_PROJECTS_INVALID_CSV");
-        public static final String EXCEL_CRM_DATA = PropertiesHelpers.getValue("EXCEL_CRM_DATA");
-        public static final String EXCEL_CRM_PRODUCTS_USER = PropertiesHelpers.getValue("EXCEL_CRM_PRODUCTS_USER");
+        public static final String EXCEL_DATA_FILE_PATH = CONFIG.EXCEL_DATA_FILE_PATH();
+        public static final String EXCEL_CRM_LOGIN = CONFIG.EXCEL_CRM_LOGIN();
+        public static final String EXCEL_PROJECTS_IMPORT = CONFIG.EXCEL_PROJECTS_IMPORT();
+        public static final String EXCEL_PROJECTS_IMPORT_MULTI = CONFIG.EXCEL_PROJECTS_IMPORT_MULTI();
+        public static final String EXCEL_PROJECTS_IMPORT_ALL_FIELDS = CONFIG.EXCEL_PROJECTS_IMPORT_ALL_FIELDS();
+        public static final String EXCEL_PROJECTS_IMPORT_REQUIRED_ONLY = CONFIG.EXCEL_PROJECTS_IMPORT_REQUIRED_ONLY();
+        public static final String EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE = CONFIG.EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE();
+        public static final String EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS = CONFIG.EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS();
+        public static final String EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS = CONFIG.EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS();
+        public static final String EXCEL_PROJECTS_IMPORT_INVALID_STATUS = CONFIG.EXCEL_PROJECTS_IMPORT_INVALID_STATUS();
+        public static final String EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE = CONFIG.EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE();
+        public static final String EXCEL_PROJECTS_IMPORT_DUPLICATE_NAME = CONFIG.EXCEL_PROJECTS_IMPORT_DUPLICATE_NAME();
+        public static final String EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY = CONFIG.EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY();
+        public static final String EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN = CONFIG.EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN();
+        public static final String EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS = CONFIG.EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS();
+        public static final String EXCEL_PROJECTS_IMPORT_EXTRA_COLUMNS = CONFIG.EXCEL_PROJECTS_IMPORT_EXTRA_COLUMNS();
+        public static final String EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS = CONFIG.EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS();
+        public static final String FILE_PROJECTS_INVALID_IMAGE = CONFIG.FILE_PROJECTS_INVALID_IMAGE();
+        public static final String FILE_PROJECTS_INVALID_PPTX = CONFIG.FILE_PROJECTS_INVALID_PPTX();
+        public static final String FILE_PROJECTS_INVALID_DOCX = CONFIG.FILE_PROJECTS_INVALID_DOCX();
+        public static final String FILE_PROJECTS_INVALID_CSV = CONFIG.FILE_PROJECTS_INVALID_CSV();
+        public static final String EXCEL_CRM_DATA = CONFIG.EXCEL_CRM_DATA();
+        public static final String EXCEL_CRM_PRODUCTS_USER = CONFIG.EXCEL_CRM_PRODUCTS_USER();
 
         // ===== CẤU HÌNH MÔI TRƯỜNG & URL =====
-        public static final String BROWSER = System.getProperty("BROWSER") != null
-                        ? System.getProperty("BROWSER")
-                        : PropertiesHelpers.getValue("BROWSER");
-        public static final String URL_CRM = PropertiesHelpers.getValue("URL_CRM");
-        public static final String URL_CMS_ADMIN = PropertiesHelpers.getValue("URL_CMS_ADMIN");
-        public static final String URL_CMS_USER = PropertiesHelpers.getValue("URL_CMS_USER");
-        public static final String REMOTE_URL = PropertiesHelpers.getValue("REMOTE_URL");
-        public static final String REMOTE_PORT = PropertiesHelpers.getValue("REMOTE_PORT");
+        // Owner tự động ưu tiên system:properties nên không cần kiểm tra System.getProperty thủ công
+        public static final String BROWSER = CONFIG.BROWSER();
+        public static final String URL_CRM = CONFIG.URL_CRM();
+        public static final String URL_CMS_ADMIN = CONFIG.URL_CMS_ADMIN();
+        public static final String URL_CMS_USER = CONFIG.URL_CMS_USER();
+        public static final String REMOTE_URL = CONFIG.REMOTE_URL();
+        public static final String REMOTE_PORT = CONFIG.REMOTE_PORT();
 
         // ===== CẤU HÌNH REPORT & NOTIFICATION =====
-        public static final String PROJECT_NAME = PropertiesHelpers.getValue("PROJECT_NAME");
-        public static final String REPORT_TITLE = PropertiesHelpers.getValue("REPORT_TITLE");
-        public static final String EXTENT_REPORT_NAME = PropertiesHelpers.getValue("EXTENT_REPORT_NAME");
-        public static final String EXTENT_REPORT_FOLDER = PropertiesHelpers.getValue("EXTENT_REPORT_FOLDER");
-        public static final String EXPORT_VIDEO_PATH = PropertiesHelpers.getValue("EXPORT_VIDEO_PATH");
-        public static final String EXPORT_CAPTURE_PATH = PropertiesHelpers.getValue("EXPORT_CAPTURE_PATH");
-        public static final String AUTHOR = PropertiesHelpers.getValue("AUTHOR");
-        public static final String TARGET = PropertiesHelpers.getValue("TARGET");
-        public static final String HEADLESS = System.getProperty("HEADLESS") != null
-                        ? System.getProperty("HEADLESS")
-                        : PropertiesHelpers.getValue("HEADLESS");
-        public static final String OVERRIDE_REPORTS = PropertiesHelpers.getValue("OVERRIDE_REPORTS");
-        public static final String OPEN_REPORTS_AFTER_EXECUTION = PropertiesHelpers
-                        .getValue("OPEN_REPORTS_AFTER_EXECUTION");
-        public static final String SEND_EMAIL_TO_USERS = PropertiesHelpers.getValue("SEND_EMAIL_TO_USERS");
-        public static final String SCREENSHOT_PASSED_TCS = PropertiesHelpers.getValue("SCREENSHOT_PASSED_TCS");
-        public static final String SCREENSHOT_FAILED_TCS = PropertiesHelpers.getValue("SCREENSHOT_FAILED_TCS");
-        public static final String SCREENSHOT_SKIPPED_TCS = PropertiesHelpers.getValue("SCREENSHOT_SKIPPED_TCS");
-        public static final String SCREENSHOT_ALL_STEPS = PropertiesHelpers.getValue("SCREENSHOT_ALL_STEPS");
-        public static final String ZIP_FOLDER = PropertiesHelpers.getValue("ZIP_FOLDER");
-        public static final String ZIP_FOLDER_PATH = PropertiesHelpers.getValue("ZIP_FOLDER_PATH");
-        public static final String ZIP_FOLDER_NAME = PropertiesHelpers.getValue("ZIP_FOLDER_NAME");
-        public static final String VIDEO_RECORD = PropertiesHelpers.getValue("VIDEO_RECORD");
+        public static final String PROJECT_NAME = CONFIG.PROJECT_NAME();
+        public static final String REPORT_TITLE = CONFIG.REPORT_TITLE();
+        public static final String EXTENT_REPORT_NAME = CONFIG.EXTENT_REPORT_NAME();
+        public static final String EXTENT_REPORT_FOLDER = CONFIG.EXTENT_REPORT_FOLDER();
+        public static final String EXPORT_VIDEO_PATH = CONFIG.EXPORT_VIDEO_PATH();
+        public static final String EXPORT_CAPTURE_PATH = CONFIG.EXPORT_CAPTURE_PATH();
+        public static final String AUTHOR = CONFIG.AUTHOR();
+        public static final String TARGET = CONFIG.TARGET();
+        public static final String HEADLESS = String.valueOf(CONFIG.HEADLESS());
+        public static final String OVERRIDE_REPORTS = CONFIG.OVERRIDE_REPORTS();
+        public static final String OPEN_REPORTS_AFTER_EXECUTION = CONFIG.OPEN_REPORTS_AFTER_EXECUTION();
+        public static final String SEND_EMAIL_TO_USERS = CONFIG.SEND_EMAIL_TO_USERS();
+        public static final String SCREENSHOT_PASSED_TCS = CONFIG.SCREENSHOT_PASSED_TCS();
+        public static final String SCREENSHOT_FAILED_TCS = CONFIG.SCREENSHOT_FAILED_TCS();
+        public static final String SCREENSHOT_SKIPPED_TCS = CONFIG.SCREENSHOT_SKIPPED_TCS();
+        public static final String SCREENSHOT_ALL_STEPS = CONFIG.SCREENSHOT_ALL_STEPS();
+        public static final String ZIP_FOLDER = CONFIG.ZIP_FOLDER();
+        public static final String ZIP_FOLDER_PATH = CONFIG.ZIP_FOLDER_PATH();
+        public static final String ZIP_FOLDER_NAME = CONFIG.ZIP_FOLDER_NAME();
+        public static final String VIDEO_RECORD = CONFIG.VIDEO_RECORD();
 
-        public static final String LOCATE = PropertiesHelpers.getValue("LOCATE");
-        public static final String RETRY_TEST_FAIL = PropertiesHelpers.getValue("RETRY_TEST_FAIL");
+        public static final String LOCATE = CONFIG.LOCATE();
+        public static final String RETRY_TEST_FAIL = CONFIG.RETRY_TEST_FAIL();
 
         // ===== CẤU HÌNH TIMEOUT (Tính bằng giây) =====
-        public static final int WAIT_DEFAULT = Integer.parseInt(PropertiesHelpers.getValue("WAIT_DEFAULT"));
-        public static final int WAIT_IMPLICIT = Integer.parseInt(PropertiesHelpers.getValue("WAIT_IMPLICIT"));
-        public static final int WAIT_EXPLICIT = Integer.parseInt(PropertiesHelpers.getValue("WAIT_EXPLICIT"));
-        public static final int WAIT_PAGE_LOADED = Integer.parseInt(PropertiesHelpers.getValue("WAIT_PAGE_LOADED"));
-        public static final int WAIT_SLEEP_STEP = Integer.parseInt(PropertiesHelpers.getValue("WAIT_SLEEP_STEP"));
-        public static final String ACTIVE_PAGE_LOADED = PropertiesHelpers.getValue("ACTIVE_PAGE_LOADED");
+        public static final int WAIT_DEFAULT = CONFIG.WAIT_DEFAULT();
+        public static final int WAIT_IMPLICIT = CONFIG.WAIT_IMPLICIT();
+        public static final int WAIT_EXPLICIT = CONFIG.WAIT_EXPLICIT();
+        public static final int WAIT_PAGE_LOADED = CONFIG.WAIT_PAGE_LOADED();
+        public static final int WAIT_SLEEP_STEP = CONFIG.WAIT_SLEEP_STEP();
+        public static final String ACTIVE_PAGE_LOADED = CONFIG.ACTIVE_PAGE_LOADED();
 
         public static final String EXTENT_REPORT_FOLDER_PATH = PROJECT_PATH + EXTENT_REPORT_FOLDER;
         public static final String EXTENT_REPORT_FILE_NAME = EXTENT_REPORT_NAME + ".html";

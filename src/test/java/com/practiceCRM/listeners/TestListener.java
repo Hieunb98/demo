@@ -12,7 +12,7 @@ import org.testng.ISuite;
 import org.testng.ISuiteListener;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import com.practiceCRM.projects.crm.models.LogInModel;
+import com.practiceCRM.projects.crm.models.SignInDTO;
 import com.practiceCRM.annotations.FrameworkAnnotation;
 import com.practiceCRM.constants.FrameworkConstants;
 import com.practiceCRM.driver.DriverManager;
@@ -20,9 +20,9 @@ import com.practiceCRM.enums.AuthorType;
 import com.practiceCRM.enums.CategoryType;
 import com.practiceCRM.helpers.CaptureHelpers;
 import com.practiceCRM.helpers.FileHelpers;
-import com.practiceCRM.helpers.PropertiesHelpers;
+import com.practiceCRM.config.ConfigFactory;
 import com.practiceCRM.helpers.ScreenRecorderHelpers;
-import com.practiceCRM.keywords.WebUI;
+import com.practiceCRM.utils.FileUtils;
 import com.practiceCRM.reports.ExtentReportManager;
 import com.practiceCRM.utils.BrowserInfoUtils;
 import com.practiceCRM.utils.EmailSendUtils;
@@ -65,16 +65,21 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
    }
 
    public String getTestName(ITestResult result) {
-      // Ưu tiên lấy tên test case từ file Excel (DataProvider)
+      // Ưu tiên lấy tên test case từ DataProvider (SignInDTO hoặc Hashtable)
       Object[] parameters = result.getParameters();
-      if (parameters != null && parameters.length > 0 && parameters[0] instanceof java.util.Hashtable) {
-         try {
-            Hashtable<String, String> data = (Hashtable<String, String>) parameters[0];
-            if (data.containsKey(LogInModel.getTestCaseName())) {
-               return data.get(LogInModel.getTestCaseName());
+      if (parameters != null && parameters.length > 0) {
+         if (parameters[0] instanceof SignInDTO data) {
+            if (data.getTestCaseName() != null && !data.getTestCaseName().trim().isEmpty()) {
+               return data.getTestCaseName().trim();
             }
-         } catch (Exception e) {
-            // Fallback nếu có lỗi
+         } else if (parameters[0] instanceof java.util.Hashtable) {
+            try {
+               Hashtable<String, String> data = (Hashtable<String, String>) parameters[0];
+               if (data.containsKey("TESTCASENAME")) {
+                  return data.get("TESTCASENAME");
+               }
+            } catch (Exception ignored) {
+            }
          }
       }
       return result.getTestName() != null ? result.getTestName()
@@ -105,12 +110,12 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
       LogUtils.info("********** RUN STARTED **********");
       LogUtils.info("========= INSTALLING CONFIGURATION DATA =========");
 
-      // Tải cấu hình từ các file .properties
-      PropertiesHelpers.loadAllFiles();
+      // Tải cấu hình tự động thông qua Owner ConfigFactory
+      ConfigFactory.getConfigs();
       // Khởi tạo file report HTML (ExtentReport)
       ExtentReportManager.initReports();
       // Tự động dọn sạch thư mục tải về trước khi chạy Suite
-      WebUI.cleanDownloadDirectory();
+      FileUtils.cleanDownloadDirectory();
       LogUtils.info("========= INSTALLED CONFIGURATION DATA =========");
       LogUtils.info("=====> Starting Suite: " + iSuite.getName());
    }
@@ -182,8 +187,10 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
    }
 
    /**
-    * Tự động sinh file executor.json để hiển thị widget EXECUTORS trên Allure Report.
-    * Tự động 100% nhận diện thông tin từ GitHub Actions CI/CD hoặc môi trường Local.
+    * Tự động sinh file executor.json để hiển thị widget EXECUTORS trên Allure
+    * Report.
+    * Tự động 100% nhận diện thông tin từ GitHub Actions CI/CD hoặc môi trường
+    * Local.
     */
    private void setAllureExecutorInformation() {
       try {
@@ -224,7 +231,8 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
             if (runNumber != null && !runNumber.isEmpty()) {
                try {
                   buildOrder = Long.parseLong(runNumber.trim());
-               } catch (NumberFormatException ignored) {}
+               } catch (NumberFormatException ignored) {
+               }
                buildName = "Run #" + runNumber + (actor != null ? " (" + actor + ")" : "");
             } else {
                buildName = "GitHub Actions Run";
@@ -294,7 +302,8 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
          ExtentReportManager.addDevices();
          ExtentReportManager.info(BrowserInfoUtils.getOSInfo());
       }
-      LogUtils.info("Test case: " + getTestName(iTestResult) + " is starting" + (iTestResult.wasRetried() ? " (Retry)..." : "..."));
+      LogUtils.info("Test case: " + getTestName(iTestResult) + " is starting"
+            + (iTestResult.wasRetried() ? " (Retry)..." : "..."));
 
       // Kích hoạt quay video nếu cấu hình = yes
       if (VIDEO_RECORD.toLowerCase().trim().equals(YES)) {
@@ -319,7 +328,7 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
       ExtentReportManager.logMessage(Status.PASS, "Test case: " + getTestName(iTestResult) + " is passed.");
 
       if (VIDEO_RECORD.trim().toLowerCase().equals(YES)) {
-         WebUI.sleep(2);
+         try { Thread.sleep(2000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
          screenRecorder.stopRecording(true);
       }
    }
@@ -345,7 +354,7 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
 
       // Dừng quay video nếu cấu hình = yes
       if (VIDEO_RECORD.toLowerCase().trim().equals(YES)) {
-         WebUI.sleep(2);
+         try { Thread.sleep(2000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
          screenRecorder.stopRecording(true);
       }
    }
@@ -353,7 +362,8 @@ public class TestListener implements ITestListener, ISuiteListener, IInvokedMeth
    @Override
    public void onTestSkipped(ITestResult iTestResult) {
       if (iTestResult.wasRetried()) {
-         LogUtils.warn("Test case " + getTestName(iTestResult) + " failed and is marked for Retry. Skipping count as real skip.");
+         LogUtils.warn("Test case " + getTestName(iTestResult)
+               + " failed and is marked for Retry. Skipping count as real skip.");
          return;
       }
       LogUtils.warn("WARNING!! Test case: " + getTestName(iTestResult) + " is skipped.");

@@ -2,7 +2,6 @@ package com.practiceCRM.projects.crm.testcases.projects;
 
 import com.practiceCRM.constants.FrameworkConstants;
 import com.practiceCRM.helpers.ExcelHelpers;
-import static com.practiceCRM.keywords.WebUI.*;
 import com.practiceCRM.projects.crm.models.ProjectModel;
 import com.practiceCRM.projects.crm.models.ProjectDTO;
 import static com.practiceCRM.projects.crm.models.ProjectModel.*;

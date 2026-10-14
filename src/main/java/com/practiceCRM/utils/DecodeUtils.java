@@ -22,13 +22,16 @@ public final class DecodeUtils {
     private static final String key1 = "AES";
     private static final String key2 = "AES/ECB/PKCS5Padding";
 
-    // private static String encryptionKeyString = "autotestselenium";
-    // Lấy key từ System Property (-D), Environment Variable (GitHub Actions
-    // Secret), hoặc mặc định ở Local
+    private static final String DEFAULT_ENCRYPTION_KEY = "autotestselenium";
+
+    // Lấy key từ System Property (-D), Environment Variable (GitHub Actions Secret), hoặc mặc định ở Local ("autotestselenium")
     private static String getEncryptionKey() {
         String key = System.getProperty("ENCRYPTION_KEY");
         if (key == null || key.trim().isEmpty()) {
             key = System.getenv("ENCRYPTION_KEY");
+        }
+        if (key == null || key.trim().isEmpty()) {
+            key = DEFAULT_ENCRYPTION_KEY;
         }
         return key;
     }
@@ -39,6 +42,9 @@ public final class DecodeUtils {
     }
 
     public static String encrypt(String Data) {
+        if (Data == null || Data.trim().isEmpty()) {
+            return "";
+        }
         String encryptedValue = null;
         try {
             SecretKey key = generateKey();
@@ -53,7 +59,10 @@ public final class DecodeUtils {
     }
 
     public static String decrypt(String encryptedData) {
-        String decryptedValue = null;
+        if (encryptedData == null || encryptedData.trim().isEmpty()) {
+            return "";
+        }
+        String decryptedValue = "";
         try {
             SecretKey key = generateKey();
             Cipher c = Cipher.getInstance(key2);

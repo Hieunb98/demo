@@ -7,7 +7,7 @@ package com.practiceCRM.driver;
 
 import com.practiceCRM.constants.FrameworkConstants;
 import com.practiceCRM.exceptions.HeadlessNotSupportedException;
-import com.practiceCRM.keywords.WebUI;
+import com.practiceCRM.utils.FileUtils;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -164,7 +164,7 @@ public enum BrowserFactory {
       prefs.put("profile.password_manager_leak_detection", false); // Tắt cảnh báo lộ mật khẩu
       prefs.put("credentials_enable_service", false);
       prefs.put("profile.password_manager_enabled", false); // Tắt popup lưu mật khẩu
-      prefs.put("download.default_directory", WebUI.getPathDownloadDirectory()); // Thư mục tải về chuẩn
+      prefs.put("download.default_directory", FileUtils.getPathDownloadDirectory()); // Thư mục tải về chuẩn
       prefs.put("download.prompt_for_download", false); // Tải tự động, không hiện cửa sổ Save As
       prefs.put("download.directory_upgrade", true);
       prefs.put("safebrowsing.enabled", true);
@@ -179,7 +179,7 @@ public enum BrowserFactory {
       try {
          Map<String, Object> params = new HashMap<>();
          params.put("behavior", "allow"); // Cho phép tải file
-         params.put("downloadPath", WebUI.getPathDownloadDirectory());
+         params.put("downloadPath", FileUtils.getPathDownloadDirectory());
          params.put("eventsEnabled", true);
          driver.executeCdpCommand("Browser.setDownloadBehavior", params);
       } catch (Exception ignored) {

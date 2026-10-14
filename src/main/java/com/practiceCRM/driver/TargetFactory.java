@@ -55,11 +55,16 @@ public class TargetFactory {
         Target target = Target.valueOf(FrameworkConstants.TARGET.toUpperCase());
         WebDriver webdriver;
 
-        // Ưu tiên: Nếu BROWSER trong config có giá trị thì dùng nó, nếu rỗng thì dùng
-        // tham số từ XML
-        String browserName = (FrameworkConstants.BROWSER != null && !FrameworkConstants.BROWSER.isEmpty())
-                ? FrameworkConstants.BROWSER
-                : browser;
+        // Thứ tự ưu tiên:
+        // 1. Tham số dòng lệnh Maven / System Property (-DBROWSER=...)
+        // 2. Tham số truyền vào từ file TestNG XML (biến browser)
+        // 3. Cấu hình mặc định từ config.properties (FrameworkConstants.BROWSER)
+        String mavenBrowser = System.getProperty("BROWSER");
+        String browserName = (mavenBrowser != null && !mavenBrowser.isEmpty())
+                ? mavenBrowser
+                : (browser != null && !browser.isEmpty())
+                        ? browser
+                        : FrameworkConstants.BROWSER;
 
         Allure.step("\uD83E\uDD16 Run on browser: " + browserName);
 

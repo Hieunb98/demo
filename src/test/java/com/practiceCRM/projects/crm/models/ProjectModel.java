@@ -5,25 +5,6 @@ import java.util.List;
 
 public class ProjectModel {
 
-        public static int row;
-
-        public static String testCaseId = "TESTCASEID";
-        public static String featureModule = "FEATURE_MODULE";
-        public static String searchKeyword = "SEARCH_KEYWORD";
-        public static String status = "STATUS";
-        public static String label = "LABEL";
-        public static String deadline = "DEADLINE";
-        public static String deadlineOption = "DEADLINE_OPTION";
-        public static String deadlineFrom = "DEADLINE_FROM";
-        public static String deadlineTo = "DEADLINE_TO";
-        public static String startDate = "START_DATE";
-        public static String startDateOption = "START_DATE_OPTION";
-        public static String startDateFrom = "START_DATE_FROM";
-        public static String startDateTo = "START_DATE_TO";
-        public static String projectTitle = "PROJECT_TITLE";
-        public static String expectedUrl = "EXPECTED_URL";
-        public static String expectedResultNote = "EXPECTED_RESULT_NOTE";
-
         // =========================================================================
         // CONSTANTS: Page Metadata & Test Data Prefixes
         // =========================================================================
@@ -44,26 +25,9 @@ public class ProjectModel {
         }
 
         // =========================================================================
-        // IMPORT TEST DATA (Lưu trữ dữ liệu đọc từ Excel import - KHUYẾN NGHỊ DÙNG
-        // ProjectDTO)
-        // =========================================================================
-        public static String nameProjectImportMultiPrefix = "Auto_Import_Multi_1788970446_"; // 5 dòng: _1 → _5
-        public static String nameProjectImportAllFields = "Auto_Import_AllFields_1788970546";
-        public static String nameProjectImportRequiredOnly = "Auto_Import_RequiredOnly_1788970646";
-
-        // =========================================================================
-        // CONSTANTS: Tên Sheet và Cột file Excel Import
+        // CONSTANTS: Sheet Name
         // =========================================================================
         public static final String SHEET_IMPORT_PROJECTS = "Projects";
-        public static final String COL_IMPORT_TITLE = "Title";
-        public static final String COL_IMPORT_TYPE = "Project Type";
-        public static final String COL_IMPORT_CLIENT = "Client";
-        public static final String COL_IMPORT_DESCRIPTION = "Description";
-        public static final String COL_IMPORT_START_DATE = "Start Date";
-        public static final String COL_IMPORT_DEADLINE = "Deadline";
-        public static final String COL_IMPORT_PRICE = "Price";
-        public static final String COL_IMPORT_LABELS = "Labels";
-        public static final String COL_IMPORT_STATUS = "Status";
 
         // =========================================================================
         // CONSTANTS: Messages & Tên File Import/Export

@@ -1,6 +1,6 @@
 package com.practiceCRM.projects.crm.pages;
 
-import com.practiceCRM.keywords.WebUI;
+import com.practiceCRM.base.BasePage;
 import com.practiceCRM.projects.crm.pages.Clients.ClientPageCRM;
 import com.practiceCRM.projects.crm.pages.Dashboard.DashboardPageCRM;
 import com.practiceCRM.projects.crm.pages.Projects.ProjectPageCRM;
@@ -16,9 +16,8 @@ import com.practiceCRM.projects.crm.pages.Tasks.TaskPage;
 import com.practiceCRM.constants.FrameworkConstants;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import static com.practiceCRM.keywords.WebUI.*;
 
-public class CommonPageCRM {
+public class CommonPageCRM extends BasePage {
 
     public LoginPageCRM loginPageCRM;
     public DashboardPageCRM dashboardPage;

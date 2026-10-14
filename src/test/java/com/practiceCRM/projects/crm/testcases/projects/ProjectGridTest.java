@@ -1,6 +1,5 @@
 package com.practiceCRM.projects.crm.testcases.projects;
 
-import static com.practiceCRM.keywords.WebUI.*;
 
 import java.util.List;
 

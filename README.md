@@ -275,9 +275,8 @@ or of Anh Tester blog: https://anhtester.com/blog/selenium-java/tao-du-lieu-gia-
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DatabaseHelpers.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ExcelHelpers.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FileHelpers.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Helpers.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PropertiesHelpers.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ScreenRecoderHelpers.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ScreenRecoderHelpers.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜SystemHelpers.java
  ┃ ┃ ┃ ┃ ┃ ┣ 📂keywords
  ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WebUI.java
  ┃ ┃ ┃ ┃ ┃ ┣ 📂mail
@@ -291,16 +290,11 @@ or of Anh Tester blog: https://anhtester.com/blog/selenium-java/tao-du-lieu-gia-
  ┃ ┃ ┃ ┃ ┃ ┗ 📂utils
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜BrowserInfoUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DataFakerUtils.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DataGenerateUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DateUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DecodeUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜EmailSendUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜IconUtils.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JsonUtils.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LanguageUtils.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LocalStorageUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜LogUtils.java
- ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ObjectUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReportUtils.java
  ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ZipUtils.java
  ┃ ┃ ┗ 📂resources

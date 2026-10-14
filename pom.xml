@@ -41,7 +41,7 @@
             https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline
         </allure.cmd.download.url>
         <extentreports.version>5.1.2</extentreports.version>
-        <apache-poi.version>5.5.1</apache-poi.version>
+        <poiji.version>5.4.0</poiji.version>
         <commons-io.version>2.21.0</commons-io.version>
         <owner.version>1.0.12</owner.version>
         <assertj.version>4.0.0-M1</assertj.version>
@@ -66,7 +66,8 @@
         <suite.project.simple>src/test/resources/suites/CRM/Project-simple.xml</suite.project.simple>
         <!-- Suite XML path - ALL -->
         <suite.all>src/test/resources/suites/SuiteAll.xml</suite.all>
-        <suiteXmlFile>${suite.all}</suiteXmlFile>
+        <suiteXML>${suite.all}</suiteXML>
+        <suiteXmlFile>${suiteXML}</suiteXmlFile>
 
         <maven.test.skip>false</maven.test.skip>
         <maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -219,17 +220,11 @@
             <version>${maven-surefire-plugin.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <!-- https://mvnrepository.com/artifact/com.github.ozlerhakan/poiji -->
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${apache-poi.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${apache-poi.version}</version>
+            <groupId>com.github.ozlerhakan</groupId>
+            <artifactId>poiji</artifactId>
+            <version>${poiji.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->

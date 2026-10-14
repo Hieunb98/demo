@@ -1,6 +1,6 @@
 package com.practiceCRM.projects.crm.pages.Projects;
 
-import static com.practiceCRM.keywords.WebUI.*;
+
 import com.practiceCRM.projects.crm.models.ProjectModel;
 import com.practiceCRM.projects.crm.models.ProjectDTO;
 import com.practiceCRM.projects.crm.pages.CommonPageCRM;
@@ -662,52 +662,18 @@ public class ProjectPageCRM extends CommonPageCRM {
 
     // --- 10.4 Post-Import Verification & Test Data (Thread-safe via ProjectDTO)
     // ---
-    private ExcelHelpers excelHelpers;
-
-    private ExcelHelpers getExcelHelpers() {
-        if (excelHelpers == null) {
-            excelHelpers = new ExcelHelpers();
-        }
-        return excelHelpers;
-    }
-
     @Step("Đọc dữ liệu dự án từ file Excel: {0}, dòng {1} trả về đối tượng ProjectDTO độc lập")
     public ProjectDTO getImportProjectTestData(String excelFilePath, int rowIdx) {
-        ExcelHelpers excel = getExcelHelpers();
-        excel.setExcelFile(excelFilePath, ProjectModel.SHEET_IMPORT_PROJECTS);
-        return ProjectDTO.builder()
-                .title(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_TITLE))
-                .projectType(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_TYPE))
-                .client(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_CLIENT))
-                .description(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_DESCRIPTION))
-                .labels(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_LABELS))
-                .startDate(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_START_DATE))
-                .deadline(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_DEADLINE))
-                .status(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_STATUS))
-                .price(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_PRICE))
-                .build();
+        List<ProjectDTO> list = ExcelHelpers.getDataList(excelFilePath, ProjectModel.SHEET_IMPORT_PROJECTS, ProjectDTO.class);
+        if (rowIdx > 0 && rowIdx <= list.size()) {
+            return list.get(rowIdx - 1);
+        }
+        return new ProjectDTO();
     }
 
     @Step("Đọc toàn bộ danh sách dữ liệu dự án từ file Excel: {0}")
     public List<ProjectDTO> getImportProjectTestDataList(String excelFilePath) {
-        ExcelHelpers excel = getExcelHelpers();
-        excel.setExcelFile(excelFilePath, ProjectModel.SHEET_IMPORT_PROJECTS);
-        int totalRows = excel.getRows();
-        List<ProjectDTO> projectList = new ArrayList<>();
-        for (int rowIdx = 1; rowIdx <= totalRows; rowIdx++) {
-            projectList.add(ProjectDTO.builder()
-                    .title(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_TITLE))
-                    .projectType(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_TYPE))
-                    .client(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_CLIENT))
-                    .description(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_DESCRIPTION))
-                    .labels(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_LABELS))
-                    .startDate(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_START_DATE))
-                    .deadline(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_DEADLINE))
-                    .status(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_STATUS))
-                    .price(excel.getCellData(rowIdx, ProjectModel.COL_IMPORT_PRICE))
-                    .build());
-        }
-        return projectList;
+        return ExcelHelpers.getDataList(excelFilePath, ProjectModel.SHEET_IMPORT_PROJECTS, ProjectDTO.class);
     }
 
     @Step("Xác thực thông tin các trường của dự án (ProjectDTO) sau khi import trên bảng (Soft Assert)")

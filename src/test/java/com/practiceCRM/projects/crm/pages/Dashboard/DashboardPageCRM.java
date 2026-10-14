@@ -1,6 +1,6 @@
 package com.practiceCRM.projects.crm.pages.Dashboard;
 
-import static com.practiceCRM.keywords.WebUI.*;
+
 
 import com.practiceCRM.constants.FrameworkConstants;
 import com.practiceCRM.enums.FailureHandling;

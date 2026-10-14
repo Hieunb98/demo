@@ -3,16 +3,14 @@ package com.practiceCRM.projects.crm.pages.Login;
 import com.practiceCRM.constants.FrameworkConstants;
 import com.practiceCRM.helpers.ExcelHelpers;
 
-import static com.practiceCRM.keywords.WebUI.*;
+
 import com.practiceCRM.projects.crm.pages.CommonPageCRM;
 import com.practiceCRM.projects.crm.pages.Dashboard.DashboardPageCRM;
 import com.practiceCRM.reports.AllureManager;
-import com.practiceCRM.projects.crm.models.LogInModel;
+import com.practiceCRM.projects.crm.models.SignInDTO;
 import com.practiceCRM.utils.DecodeUtils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-
-import java.util.Hashtable;
 
 public class LoginPageCRM extends CommonPageCRM {
 
@@ -32,15 +30,19 @@ public class LoginPageCRM extends CommonPageCRM {
 
     @Step("Sign in with email and password")
     public DashboardPageCRM openDashboardPage() {
-        ExcelHelpers excel = new ExcelHelpers();
-        excel.setExcelFile(FrameworkConstants.EXCEL_CRM_LOGIN, "SignIn");
+        SignInDTO adminUser = ExcelHelpers.getDataList(
+                FrameworkConstants.EXCEL_CRM_LOGIN, "SignIn", SignInDTO.class).get(0);
         openWebsite(FrameworkConstants.URL_CRM);
         verifyContains(getCurrentUrl(), pageUrl, "The url of sign in page not match.");
         verifyEquals(getPageTitle(), pageTitle, "The title of sign in page not match.");
         clearText(inputEmail);
         clearText(inputPassword);
-        setText(inputEmail, excel.getCellData(LogInModel.getEmail(), 1));
-        setText(inputPassword, DecodeUtils.decrypt(excel.getCellData(LogInModel.getPassword(), 1)));
+        if (adminUser.getEmail() != null && !adminUser.getEmail().isEmpty()) {
+            setText(inputEmail, adminUser.getEmail());
+        }
+        if (adminUser.getPassword() != null && !adminUser.getPassword().isEmpty()) {
+            setText(inputPassword, DecodeUtils.decrypt(adminUser.getPassword()));
+        }
         clickElement(buttonSignIn);
         waitForElementVisible(getDashboardPage().menuDashboard, 10);
         verifyContains(getCurrentUrl(), getDashboardPage().pageUrl,
@@ -50,15 +52,19 @@ public class LoginPageCRM extends CommonPageCRM {
     }
 
     @Step("Login thành công với data provider")
-    public DashboardPageCRM signInSuccess(Hashtable<String, String> data) {
-        AllureManager.saveTextLog("Run: " + data.get(LogInModel.getTestCaseName()));
+    public DashboardPageCRM signInSuccess(SignInDTO data) {
+        AllureManager.saveTextLog("Run: " + data.getTestCaseName());
         openWebsite(FrameworkConstants.URL_CRM);
         verifyContains(getCurrentUrl(), pageUrl, "The url of sign in page not match.");
         verifyEquals(getPageTitle(), pageTitle, "The title of sign in page not match.");
         clearText(inputEmail);
         clearText(inputPassword);
-        setText(inputEmail, data.get(LogInModel.getEmail()));
-        setText(inputPassword, DecodeUtils.decrypt(data.get(LogInModel.getPassword())));
+        if (data.getEmail() != null && !data.getEmail().isEmpty()) {
+            setText(inputEmail, data.getEmail());
+        }
+        if (data.getPassword() != null && !data.getPassword().isEmpty()) {
+            setText(inputPassword, DecodeUtils.decrypt(data.getPassword()));
+        }
         clickElement(buttonSignIn);
         waitForElementVisible(getDashboardPage().menuDashboard, 10);
         verifyContains(getCurrentUrl(), getDashboardPage().pageUrl,
@@ -68,43 +74,47 @@ public class LoginPageCRM extends CommonPageCRM {
     }
 
     @Step("Login thất bại với data provider")
-    public void signInFalse(Hashtable<String, String> data) {
-        AllureManager.saveTextLog("Run: " + data.get(LogInModel.getTestCaseName()));
+    public void signInFalse(SignInDTO data) {
+        AllureManager.saveTextLog("Run: " + data.getTestCaseName());
         openWebsite(FrameworkConstants.URL_CRM);
         verifyContains(getCurrentUrl(), pageUrl, "The url of sign in page not match.");
         verifyEquals(getPageTitle(), pageTitle, "The title of sign in page not match.");
         clearText(inputEmail);
         clearText(inputPassword);
-        setText(inputEmail, data.get(LogInModel.getEmail()));
-        setText(inputPassword, DecodeUtils.decrypt(data.get(LogInModel.getPassword())));
+        if (data.getEmail() != null && !data.getEmail().isEmpty()) {
+            setText(inputEmail, data.getEmail());
+        }
+        if (data.getPassword() != null && !data.getPassword().isEmpty()) {
+            setText(inputPassword, DecodeUtils.decrypt(data.getPassword()));
+        }
         clickElement(buttonSignIn);
         waitForPageLoaded();
-        verifyContains(getCurrentUrl(), data.get(LogInModel.getExpectedUrl()),
+        verifyContains(getCurrentUrl(), data.getExpectedUrl(),
                 "khi case false nhưng URL sai " + getCurrentUrl());
-        switch (data.get(LogInModel.getExpectedError())) {
+        switch (data.getExpectedError() != null ? data.getExpectedError() : "") {
             case "This field is required.":
-                boolean isEmailEmpty = data.get(LogInModel.getEmail()) == null
-                        || data.get(LogInModel.getEmail()).isEmpty();
-                boolean isPasswordEmpty = data.get(LogInModel.getPassword()) == null
-                        || data.get(LogInModel.getPassword()).isEmpty();
+                boolean isEmailEmpty = data.getEmail() == null
+                        || data.getEmail().isEmpty();
+                boolean isPasswordEmpty = data.getPassword() == null
+                        || data.getPassword().isEmpty();
 
                 // Nếu Email để trống, check lỗi Email
                 if (isEmailEmpty) {
-                    verifyEquals(getTextElement(labelEmailError), data.get(LogInModel.getExpectedError()),
+                    verifyEquals(getTextElement(labelEmailError), data.getExpectedError(),
                             "Message lỗi Email không đúng!");
                 }
                 // Nếu Password để trống, check lỗi Password
                 if (isPasswordEmpty) {
-                    verifyEquals(getTextElement(labelPasswordError), data.get(LogInModel.getExpectedError()),
+                    verifyEquals(getTextElement(labelPasswordError), data.getExpectedError(),
                             "Message lỗi Password không đúng!");
                 }
                 break;
             case "Authentication failed!":
-                verifyEquals(getTextElement(alertErrorMessage), data.get(LogInModel.getExpectedError()),
+                verifyEquals(getTextElement(alertErrorMessage), data.getExpectedError(),
                         "khi case false nhưng message sai " + getTextElement(alertErrorMessage));
                 break;
             case "Please enter a valid email address.":
-                verifyEquals(getTextElement(labelEmailError), data.get(LogInModel.getExpectedError()),
+                verifyEquals(getTextElement(labelEmailError), data.getExpectedError(),
                         "khi case false nhưng message sai " + getTextElement(labelEmailError));
                 break;
             default:

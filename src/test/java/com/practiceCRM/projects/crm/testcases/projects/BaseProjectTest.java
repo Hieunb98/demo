@@ -2,7 +2,6 @@ package com.practiceCRM.projects.crm.testcases.projects;
 
 import com.practiceCRM.common.BaseTest;
 import com.practiceCRM.driver.DriverManager;
-import static com.practiceCRM.keywords.WebUI.*;
 import com.practiceCRM.enums.FailureHandling;
 import com.practiceCRM.projects.crm.models.ProjectModel;
 import com.practiceCRM.projects.crm.pages.Projects.ProjectPageCRM;

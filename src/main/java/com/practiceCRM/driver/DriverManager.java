@@ -13,7 +13,14 @@ public class DriverManager {
     // ThreadLocal lưu trữ WebDriver riêng biệt cho từng luồng (thread)
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    // Private constructor ngăn không cho khởi tạo đối tượng DriverManager từ bên ngoài
+    /**
+     * Private constructor ngăn không cho khởi tạo đối tượng DriverManager từ bên ngoài (`new DriverManager()`).
+     * Mục đích:
+     * 1. DriverManager là Utility / Global Manager Class, toàn bộ phương thức (getDriver, setDriver, quit) đều là static.
+     * 2. Tránh việc lập trình viên hiểu nhầm và tạo ra nhiều instance vô nghĩa (`new DriverManager()`), gây lãng phí bộ nhớ RAM (Heap).
+     * 3. Ép buộc mọi nơi trong framework phải truy cập đồng nhất qua Class level: `DriverManager.getDriver()`.
+     * (Nguyên tắc thiết kế này giống hệt các class chuẩn của Java như java.lang.Math hay java.util.Collections).
+     */
     private DriverManager() {
         super();
     }
