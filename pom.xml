@@ -321,6 +321,9 @@
                         <testFailureIgnore>${maven.test.failure.ignore}</testFailureIgnore>
                         <systemPropertyVariables>
                             <allure.results.directory>target/allure-results</allure.results.directory>
+                            <TARGET>${TARGET}</TARGET>
+                            <BROWSER>${BROWSER}</BROWSER>
+                            <HEADLESS>${HEADLESS}</HEADLESS>
                         </systemPropertyVariables>
                     </configuration>
                 </plugin>

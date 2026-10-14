@@ -65,9 +65,9 @@ public final class FrameworkConstants {
         public static final String EXTENT_REPORT_FOLDER = CONFIG.EXTENT_REPORT_FOLDER();
         public static final String EXPORT_VIDEO_PATH = CONFIG.EXPORT_VIDEO_PATH();
         public static final String EXPORT_CAPTURE_PATH = CONFIG.EXPORT_CAPTURE_PATH();
-        public static final String AUTHOR = CONFIG.AUTHOR();
-        public static final String TARGET = CONFIG.TARGET();
-        public static final String HEADLESS = String.valueOf(CONFIG.HEADLESS());
+        public static final String TARGET = (System.getProperty("TARGET") != null && !System.getProperty("TARGET").trim().isEmpty())
+                ? System.getProperty("TARGET").trim()
+                : CONFIG.TARGET();
         public static final String OVERRIDE_REPORTS = CONFIG.OVERRIDE_REPORTS();
         public static final String OPEN_REPORTS_AFTER_EXECUTION = CONFIG.OPEN_REPORTS_AFTER_EXECUTION();
         public static final String SEND_EMAIL_TO_USERS = CONFIG.SEND_EMAIL_TO_USERS();
