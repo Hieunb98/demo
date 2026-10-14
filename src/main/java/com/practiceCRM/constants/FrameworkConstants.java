@@ -13,8 +13,10 @@ import com.practiceCRM.utils.ReportUtils;
 import java.io.File;
 
 /**
- * FrameworkConstants là nơi tập trung các hằng số (constants) cho toàn bộ hệ thống.
- * Cấu hình được nạp Type-safe thông qua thư viện Owner (Configuration & ConfigFactory).
+ * FrameworkConstants là nơi tập trung các hằng số (constants) cho toàn bộ hệ
+ * thống.
+ * Cấu hình được nạp Type-safe thông qua thư viện Owner (Configuration &
+ * ConfigFactory).
  */
 public final class FrameworkConstants {
 
@@ -31,17 +33,25 @@ public final class FrameworkConstants {
         public static final String EXCEL_PROJECTS_IMPORT_MULTI = CONFIG.EXCEL_PROJECTS_IMPORT_MULTI();
         public static final String EXCEL_PROJECTS_IMPORT_ALL_FIELDS = CONFIG.EXCEL_PROJECTS_IMPORT_ALL_FIELDS();
         public static final String EXCEL_PROJECTS_IMPORT_REQUIRED_ONLY = CONFIG.EXCEL_PROJECTS_IMPORT_REQUIRED_ONLY();
-        public static final String EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE = CONFIG.EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE();
-        public static final String EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS = CONFIG.EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS();
-        public static final String EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS = CONFIG.EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS();
+        public static final String EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_TRIM_AND_UNICODE();
+        public static final String EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_MISSING_PROJECT_TYPE_AND_STATUS();
+        public static final String EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_MISSING_CLIENT_AND_STATUS();
         public static final String EXCEL_PROJECTS_IMPORT_INVALID_STATUS = CONFIG.EXCEL_PROJECTS_IMPORT_INVALID_STATUS();
-        public static final String EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE = CONFIG.EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE();
+        public static final String EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_INVALID_DATE_AND_PRICE();
         public static final String EXCEL_PROJECTS_IMPORT_DUPLICATE_NAME = CONFIG.EXCEL_PROJECTS_IMPORT_DUPLICATE_NAME();
-        public static final String EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY = CONFIG.EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY();
-        public static final String EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN = CONFIG.EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN();
-        public static final String EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS = CONFIG.EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS();
+        public static final String EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_EMPTY_HEADER_ONLY();
+        public static final String EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_MISSING_TITLE_COLUMN();
+        public static final String EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_SWAPPED_COLUMNS();
         public static final String EXCEL_PROJECTS_IMPORT_EXTRA_COLUMNS = CONFIG.EXCEL_PROJECTS_IMPORT_EXTRA_COLUMNS();
-        public static final String EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS = CONFIG.EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS();
+        public static final String EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS = CONFIG
+                        .EXCEL_PROJECTS_IMPORT_MULTIPLE_SHEETS();
         public static final String FILE_PROJECTS_INVALID_IMAGE = CONFIG.FILE_PROJECTS_INVALID_IMAGE();
         public static final String FILE_PROJECTS_INVALID_PPTX = CONFIG.FILE_PROJECTS_INVALID_PPTX();
         public static final String FILE_PROJECTS_INVALID_DOCX = CONFIG.FILE_PROJECTS_INVALID_DOCX();
@@ -50,14 +60,16 @@ public final class FrameworkConstants {
         public static final String EXCEL_CRM_PRODUCTS_USER = CONFIG.EXCEL_CRM_PRODUCTS_USER();
 
         // ===== CẤU HÌNH MÔI TRƯỜNG & URL =====
-        // Owner tự động ưu tiên system:properties nên không cần kiểm tra System.getProperty thủ công
+        // Owner tự động ưu tiên system:properties nên không cần kiểm tra
+        // System.getProperty thủ công
         public static final String BROWSER = CONFIG.BROWSER();
         public static final String URL_CRM = CONFIG.URL_CRM();
         public static final String URL_CMS_ADMIN = CONFIG.URL_CMS_ADMIN();
         public static final String URL_CMS_USER = CONFIG.URL_CMS_USER();
-        public static final String REMOTE_URL = (System.getProperty("REMOTE_URL") != null && !System.getProperty("REMOTE_URL").trim().isEmpty())
-                ? System.getProperty("REMOTE_URL").trim()
-                : CONFIG.REMOTE_URL();
+        public static final String REMOTE_URL = (System.getProperty("REMOTE_URL") != null
+                        && !System.getProperty("REMOTE_URL").trim().isEmpty())
+                                        ? System.getProperty("REMOTE_URL").trim()
+                                        : CONFIG.REMOTE_URL();
         public static final String REMOTE_PORT = CONFIG.REMOTE_PORT();
 
         // ===== CẤU HÌNH REPORT & NOTIFICATION =====
@@ -68,9 +80,10 @@ public final class FrameworkConstants {
         public static final String EXPORT_VIDEO_PATH = CONFIG.EXPORT_VIDEO_PATH();
         public static final String EXPORT_CAPTURE_PATH = CONFIG.EXPORT_CAPTURE_PATH();
         public static final String AUTHOR = CONFIG.AUTHOR();
-        public static final String TARGET = (System.getProperty("TARGET") != null && !System.getProperty("TARGET").trim().isEmpty())
-                ? System.getProperty("TARGET").trim()
-                : CONFIG.TARGET();
+        public static final String TARGET = (System.getProperty("TARGET") != null
+                        && !System.getProperty("TARGET").trim().isEmpty())
+                                        ? System.getProperty("TARGET").trim()
+                                        : CONFIG.TARGET();
         public static final String HEADLESS = String.valueOf(CONFIG.HEADLESS());
         public static final String OVERRIDE_REPORTS = CONFIG.OVERRIDE_REPORTS();
         public static final String OPEN_REPORTS_AFTER_EXECUTION = CONFIG.OPEN_REPORTS_AFTER_EXECUTION();
@@ -129,7 +142,6 @@ public final class FrameworkConstants {
         public static final String ICON_LAPTOP = "<i class='fa fa-laptop' style='font-size:18px'></i>";
         public static final String ICON_BUG = "<i class='fa fa-bug' ></i>";
         /* style="text-align:center;" */
-
 
         public static final String ICON_CAMERA = "<i class=\"fa fa-camera\" aria-hidden=\"true\"></i>";
 
