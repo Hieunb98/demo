@@ -105,47 +105,46 @@ pipeline {
             // 4.3. Gửi thông báo tổng kết và đính kèm file ExtentReports lên Telegram Bot
             script {
                 try {
+                    def buildStatus = currentBuild.currentResult ?: 'SUCCESS'
+                    def statusEmoji = (buildStatus == 'SUCCESS') ? '✅ PASS TOÀN BỘ' : '❌ CÓ TEST THẤT BẠI / LỖI'
+                    def suiteName = params.SUITE ?: 'SuiteAll.xml'
+                    def browserName = params.BROWSER ?: 'chrome'
+                    def allureUrl = "${env.BUILD_URL}allure"
+
                     withCredentials([
                         string(credentialsId: 'telegram-bot-token', variable: 'TELEGRAM_TOKEN'),
                         string(credentialsId: 'telegram-bot-id', variable: 'TELEGRAM_CHATID')
                     ]) {
-                        sh '''
-                            BUILD_STATUS="${currentBuild.currentResult}"
-                            STATUS_EMOJI="✅ PASS TOÀN BỘ"
-                            if [ "$BUILD_STATUS" != "SUCCESS" ]; then
-                                STATUS_EMOJI="❌ CÓ TEST THẤT BẠI / LỖI"
-                            fi
-
-                            NOW=$(date '+%d/%m/%Y %H:%M:%S')
-                            ALLURE_URL="${BUILD_URL}allure"
+                        sh """
+                            NOW=\$(date '+%d/%m/%Y %H:%M:%S')
 
                             # 1. Gửi tin nhắn tóm tắt qua HTTP API Telegram
                             MESSAGE="🚀 <b>KẾT QUẢ AUTOMATION TEST CRM (JENKINS)</b> 🚀%0A"
-                            MESSAGE="${MESSAGE}Trạng thái: <b>${STATUS_EMOJI}</b>%0A"
-                            MESSAGE="${MESSAGE}━━━━━━━━━━━━━━━━━━━%0A"
-                            MESSAGE="${MESSAGE}🔖 Build: <b>#${BUILD_NUMBER} (${JOB_NAME})</b>%0A"
-                            MESSAGE="${MESSAGE}🕒 Thời gian: <b>${NOW}</b>%0A"
-                            MESSAGE="${MESSAGE}🌐 Suite: <b>${SUITE}</b> | Browser: <b>${BROWSER}</b>%0A"
-                            MESSAGE="${MESSAGE}━━━━━━━━━━━━━━━━━━━%0A"
-                            MESSAGE="${MESSAGE}🔗 <a href=\\"${ALLURE_URL}\\">Xem Allure Report trên Jenkins</a>"
+                            MESSAGE="\${MESSAGE}Trạng thái: <b>${statusEmoji}</b>%0A"
+                            MESSAGE="\${MESSAGE}━━━━━━━━━━━━━━━━━━━%0A"
+                            MESSAGE="\${MESSAGE}🔖 Build: <b>#${env.BUILD_NUMBER} (${env.JOB_NAME})</b>%0A"
+                            MESSAGE="\${MESSAGE}🕒 Thời gian: <b>\${NOW}</b>%0A"
+                            MESSAGE="\${MESSAGE}🌐 Suite: <b>${suiteName}</b> | Browser: <b>${browserName}</b>%0A"
+                            MESSAGE="\${MESSAGE}━━━━━━━━━━━━━━━━━━━%0A"
+                            MESSAGE="\${MESSAGE}🔗 <a href=\\"${allureUrl}/\\">Xem Allure Report trên Jenkins</a>"
 
-                            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
-                                -d chat_id="${TELEGRAM_CHATID}" \
-                                -d text="${MESSAGE}" \
+                            curl -s -X POST "https://api.telegram.org/bot\${TELEGRAM_TOKEN}/sendMessage" \
+                                -d chat_id="\${TELEGRAM_CHATID}" \
+                                -d text="\${MESSAGE}" \
                                 -d parse_mode="HTML" || true
 
                             # 2. Gửi đính kèm file ExtentReports.html nếu tồn tại
                             REPORT_FILE="exports/ExtentReports/ExtentReports.html"
-                            if [ -f "$REPORT_FILE" ]; then
-                                curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendDocument" \
-                                    -F "chat_id=${TELEGRAM_CHATID}" \
-                                    -F "document=@${REPORT_FILE}" \
-                                    -F "caption=📊 Báo cáo chi tiết ExtentReports (Build #${BUILD_NUMBER})" || true
+                            if [ -f "\$REPORT_FILE" ]; then
+                                curl -s -X POST "https://api.telegram.org/bot\${TELEGRAM_TOKEN}/sendDocument" \
+                                    -F "chat_id=\${TELEGRAM_CHATID}" \
+                                    -F "document=@\$REPORT_FILE" \
+                                    -F "caption=📊 Báo cáo chi tiết ExtentReports (Build #${env.BUILD_NUMBER})" || true
                             fi
-                        '''
+                        """
                     }
                 } catch (Exception e) {
-                    echo "ℹ️ Bỏ qua gửi Telegram: Chưa cấu hình Credential 'telegram-bot-token' hoặc 'telegram-chat-id' trên Jenkins."
+                    echo "ℹ️ Gửi Telegram thất bại: ${e.getMessage()}"
                 }
             }
 
